@@ -4,6 +4,8 @@
 THINGS TO WORK ON: Implement Heuristic parser for grabbing characters. 
                     I already have the switch-case implemented, so now it's
                     just about creating the CSV, and creating the state array.
+                    Examples to look at are: pg 48 of the hymnal,
+                    pg 50, and 51 as well.
  */
 namespace app
 {
