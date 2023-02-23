@@ -107,11 +107,11 @@ namespace app
             {
                 reserved.Add(line);
             }
-            // Console.WriteLine(reserved.Contains("Big Yoshi"));
-            // foreach (String item in reserved)
-            // {
-            //     Console.WriteLine(item);
-            // }
+            Console.WriteLine(reserved.Contains("Big Yoshi"));
+            foreach (String item in reserved)
+            {
+                Console.WriteLine(item);
+            }
             pgmreader.Close();
             //pgmreader = new StreamReader ()
 
@@ -119,9 +119,15 @@ namespace app
         static void Main(String[] args)
         {
 
-            String[] tokenArr = tokenList();
+            // String[] tokenArr = tokenList();
 
-            tokenClassifier(tokenArr);
+            // tokenClassifier(tokenArr);
+
+            //statetable bigTest = new statetable();
+            //bigTest.dfsa();
+
+            statetable createTable = new statetable();
+            createTable.dfsa();
 
             // foreach (String item in tokenArr)
             // {

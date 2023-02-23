@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "mliEdoAyzK4JLlce/PQPPtqy+iz2QV65Oi7Q4zcYnjRPGkQh8gJwLQ1W6+bwDATmkPKQdBnSafMyN9gsex3/7g==",
+  "dgSpecHash": "PZKz5P+tk5LxwksWadMGomceY0bBMMrgRVIqbEr94uZd96ZN6QeuYCwNjrl/+3EI/bd4JvZkWJwpQl2wQmSNTQ==",
   "success": true,
   "projectFilePath": "F:\\Documents\\SHSU\\SHSU Spring 2023\\Compiler Design\\compiler_files\\app\\app.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\moteo\\.nuget\\packages\\csvhelper\\30.0.1\\csvhelper.30.0.1.nupkg.sha512"
+  ],
   "logs": []
 }
