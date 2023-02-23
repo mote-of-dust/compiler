@@ -1,9 +1,10 @@
 ﻿using System;
 
 /*
-THINGS TO WORK ON: Implement Heuristic parser for grabbing characters. 
-                    I already have the switch-case implemented, so now it's
-                    just about creating the CSV, and creating the state array.
+THINGS TO WORK ON: (2- 22-2023)
+                    CSV made, and code written to read it and put in list.
+                    Next will be working out the switch case, and potential nested
+                    looping needed to parse code and traverse the FSA table. 
                     Examples to look at are: pg 48 of the hymnal,
                     pg 50, and 51 as well.
  */
