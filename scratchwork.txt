@@ -27,3 +27,67 @@
             //                                     {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,},
             //                                     {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,},
             //                                     };
+
+
+            /**************************************************************
+
+            original hard-coded case switch:
+
+                            switch (nextstate)
+                {
+
+                    case ' ':
+                        {
+                            if (tempvar != "")
+                            {
+                                tokenList.Add(tempvar);
+                                tempvar = "";
+                                break;
+                            }
+                            else
+                                break;
+
+                        }
+                    case '\t':
+                        {
+                            break;
+                        }
+                    case '\n':
+                        {
+                            break;
+                        }
+                    case ',':
+                        {
+                            tokenList.Add(tempvar);
+                            tempvar = "";
+                            tempvar += ch;
+                            tokenList.Add(tempvar);
+                            tempvar = "";
+                            break;
+                        }
+                    case ';':
+                        {
+                            tokenList.Add(tempvar);
+                            tempvar = "";
+                            tempvar += ch;
+                            tokenList.Add(tempvar);
+                            tempvar = "";
+                            break;
+                        }
+                    case '{':
+                        {
+                            tokenList.Add(tempvar);
+                            tempvar = "";
+                            tempvar += ch;
+                            tokenList.Add(tempvar);
+                            tempvar = "";
+                            break;
+                        }
+
+                    default:
+                        tempvar += ch;
+                        break;
+
+                }
+
+                *****************************************/

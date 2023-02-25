@@ -22,6 +22,25 @@ namespace app
             String[] tokenvars;
             // temp char variable to hold the character the file reader is reading.
             char ch;
+            char chSym;
+            int curstate = 0;
+            int nextstate;
+
+
+            statetable createTable = new statetable();
+            List<String[]> statetab = createTable.dfsa();
+
+            for (int i = 0; i < statetab[0].GetLength(0); i++)
+            {
+                String[] temp = statetab[i];
+                for (int j = 0; j < temp.GetLength(0); j++)
+                {
+                    Console.Write(statetab[i][j] + ' ');
+                }
+                Console.Write('\n');
+            }
+
+
 
             /* For now the path to the test code path is hardcoded, but could later be easily switch to user I/O */
             StreamReader pgmreader = new StreamReader(@"F:\Documents\SHSU\SHSU Spring 2023\Compiler Design\compiler_files\app\PGM1.txt");
@@ -29,62 +48,102 @@ namespace app
             {
                 ch = (char)pgmreader.Read();
 
+                if (Char.IsLetter(ch))
+                {
+                    chSym = 'L';
+                }
+                else if (Char.IsDigit(ch))
+                {
+                    chSym = 'D';
+                }
+                else if (ch == '\t' || ch == '\n')
+                {
+                    chSym = ' ';
+                }
+                else
+                {
+                    chSym = ch;
+                }
+
+                for (int i = 0; i < statetab[0].GetLength(0); i++)
+                {
+                    if (statetab[0][i] == chSym.ToString())
+                    {
+                        nextstate = Convert.ToInt32(statetab[curstate + 1][i]);
+                        //Console.WriteLine("Next state is: " + statetab[curstate + 1][i]);
+                        break;
+                    }
+                    else
+                    {
+                        Console.WriteLine("False");
+                    }
+                }
+
 
                 // After ch takes the next pgmreader character (line above), a switch case decides what needs to be done based on what the character is.
 
-                switch (ch)
+                switch (nextstate)
                 {
 
-                    case ' ':
+                    case 0:
                         {
                             if (tempvar != "")
                             {
                                 tokenList.Add(tempvar);
                                 tempvar = "";
+                                curstate = nextstate;
                                 break;
                             }
                             else
-                                break;
+                                curstate = nextstate;
+                            break;
 
                         }
-                    case '\t':
+
+                    case 2:
                         {
-                            break;
+                            if (curstate == 0)
+                            {
+                                tempvar = ch.ToString() + "<mop>";
+                                tokenList.Add(tempvar);
+                                tempvar = "";
+                                curstate = 0;
+                                break;
+                            }
+                            else
+                            {
+                                tokenList.Add(tempvar);
+                                tempvar = ch.ToString() + "<mop>";
+                                tokenList.Add(tempvar);
+                                tempvar = "";
+                                curstate = 0;
+                                break;
+                            }
                         }
-                    case '\n':
+
+                    case 3:
                         {
-                            break;
-                        }
-                    case ',':
-                        {
-                            tokenList.Add(tempvar);
-                            tempvar = "";
                             tempvar += ch;
-                            tokenList.Add(tempvar);
-                            tempvar = "";
+                            curstate = nextstate;
                             break;
                         }
-                    case ';':
+                    case 4:
                         {
+                            tempvar += "<int>";
                             tokenList.Add(tempvar);
                             tempvar = "";
-                            tempvar += ch;
-                            tokenList.Add(tempvar);
-                            tempvar = "";
+                            curstate = 0;
                             break;
                         }
-                    case '{':
+
+                    case 5:
                         {
-                            tokenList.Add(tempvar);
-                            tempvar = "";
                             tempvar += ch;
-                            tokenList.Add(tempvar);
-                            tempvar = "";
+                            curstate = nextstate;
                             break;
                         }
 
                     default:
-                        tempvar += ch;
                         break;
 
                 }
@@ -120,15 +179,14 @@ namespace app
         static void Main(String[] args)
         {
 
-            // String[] tokenArr = tokenList();
+            String[] tokenArr = tokenList();
+
+
 
             // tokenClassifier(tokenArr);
 
             //statetable bigTest = new statetable();
             //bigTest.dfsa();
-
-            statetable createTable = new statetable();
-            createTable.dfsa();
 
             // foreach (String item in tokenArr)
             // {
