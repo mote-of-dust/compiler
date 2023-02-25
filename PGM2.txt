@@ -1,0 +1,1 @@
+CONST Joe = bob * 4

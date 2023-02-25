@@ -1,7 +1,21 @@
 ﻿using System;
 
 /*
-THINGS TO WORK ON: (2- 22-2023)
+THINGS TO WORK ON:  (2-25-2023)
+                    class completed which takes in the fsa state csv and creates
+                    a List<String[]> variable out of it. Switch case statements have
+                    begun to be adjusted to make it's decisions based off the csv,
+                    current state, and the current tempvar. Propper typing for each
+                    token appears to be working (for what is currently implemented)
+                    Rest of the switch cases Need to be completed,after which all that 
+                    is left is completing the symbol table based off of the token-list.
+
+
+
+
+
+
+                    (2- 22-2023)
                     CSV made, and code written to read it and put in list.
                     Next will be working out the switch case, and potential nested
                     looping needed to parse code and traverse the FSA table. 
@@ -24,29 +38,34 @@ namespace app
             char ch;
             char chSym;
             int curstate = 0;
-            int nextstate;
+            int nextstate = 0;
+            int staterow = 0;
 
 
             statetable createTable = new statetable();
             List<String[]> statetab = createTable.dfsa();
 
-            for (int i = 0; i < statetab[0].GetLength(0); i++)
-            {
-                String[] temp = statetab[i];
-                for (int j = 0; j < temp.GetLength(0); j++)
-                {
-                    Console.Write(statetab[i][j] + ' ');
-                }
-                Console.Write('\n');
-            }
+            // for (int i = 0; i < statetab[0].GetLength(0); i++)
+            // {
+            //     String[] temp = statetab[i];
+            //     for (int j = 0; j < temp.GetLength(0); j++)
+            //     {
+            //         Console.Write(statetab[i][j] + ' ');
+            //     }
+            //     Console.Write('\n');
+            // }
 
 
 
             /* For now the path to the test code path is hardcoded, but could later be easily switch to user I/O */
-            StreamReader pgmreader = new StreamReader(@"F:\Documents\SHSU\SHSU Spring 2023\Compiler Design\compiler_files\app\PGM1.txt");
-            while (pgmreader.Peek() >= 0)
+            StreamReader pgmreader = new StreamReader(@"F:\Documents\SHSU\SHSU Spring 2023\Compiler Design\compiler_files\app\PGM2.txt");
+            while (pgmreader.Peek() > -1)
             {
                 ch = (char)pgmreader.Read();
+
+                Console.WriteLine("Is " + ch + " a letter: ");
+                Console.WriteLine(Char.IsLetter(ch));
+
 
                 if (Char.IsLetter(ch))
                 {
@@ -65,11 +84,13 @@ namespace app
                     chSym = ch;
                 }
 
-                for (int i = 0; i < statetab[0].GetLength(0); i++)
+
+                for (staterow = 1; staterow < statetab[0].GetLength(0); staterow++)
                 {
-                    if (statetab[0][i] == chSym.ToString())
+                    if (statetab[0][staterow] == chSym.ToString())
                     {
-                        nextstate = Convert.ToInt32(statetab[curstate + 1][i]);
+                        nextstate = Convert.ToInt32(statetab[curstate + 1][staterow]);
+                        Console.WriteLine("Next state for char " + ch + " is " + nextstate.ToString());
                         //Console.WriteLine("Next state is: " + statetab[curstate + 1][i]);
                         break;
                     }
@@ -104,7 +125,7 @@ namespace app
                         {
                             if (curstate == 0)
                             {
-                                tempvar = ch.ToString() + "<mop>";
+                                tempvar = ch.ToString() + " <mop>";
                                 tokenList.Add(tempvar);
                                 tempvar = "";
                                 curstate = 0;
@@ -113,7 +134,7 @@ namespace app
                             else
                             {
                                 tokenList.Add(tempvar);
-                                tempvar = ch.ToString() + "<mop>";
+                                tempvar = ch.ToString() + " <mop>";
                                 tokenList.Add(tempvar);
                                 tempvar = "";
                                 curstate = 0;
@@ -142,13 +163,63 @@ namespace app
                             curstate = nextstate;
                             break;
                         }
+                    case 6:
+                        {
+                            reservewords ResObj = new reservewords();
+                            String[] ResArr = ResObj.createResArr();
+                            if (Array.IndexOf(ResArr, tempvar) >= 0)
+                            {
+                                tokenList.Add(tempvar + " <$" + ResArr[Array.IndexOf(ResArr, tempvar)] + ">");
+                            }
+                            else
+                            {
+                                tokenList.Add(tempvar + " " + statetab[nextstate + 1][1]);
+                            }
+
+                            if (ch == ' ')
+                            {
+                                tempvar = "";
+                            }
+                            else
+                            {
+                                tempvar = ch.ToString();
+                            }
+                            curstate = Convert.ToInt32(statetab[1][staterow]);
+                            //Console.WriteLine("Next state")
+                            break;
+
+                        }
+                    case 11:
+                        {
+                            tempvar += ch;
+                            curstate = nextstate;
+                            break;
+                        }
+                    case 12:
+                        {
+                            tempvar += " " + statetab[nextstate + 1][1];
+                            tokenList.Add(tempvar);
+                            tempvar = "";
+                            curstate = 0;
+                            break;
+                        }
 
                     default:
                         break;
 
                 }
+
+                // catches edge case of last character to be read, and correctly types it.
+                if (!(pgmreader.Peek() > -1))
+                {
+                    //Console.WriteLine("Current state = " + curstate);
+                    //Console.WriteLine(statetab[curstate + 1][7]);
+                    int tempstate = Convert.ToInt32(statetab[curstate + 1][7]);
+                    tokenList.Add(tempvar + " " + statetab[tempstate + 1][1]);
+                    //Console.WriteLine("test " + statetab[tempstate + 1][1]);
+                }
             }
-            tokenList.Add(tempvar);
+
             tokenvars = tokenList.ToArray();
             pgmreader.Close();
 
@@ -156,42 +227,17 @@ namespace app
             return tokenvars;
         }
 
-        static void tokenClassifier(String[] tokenArr)
-        {
-            StreamReader pgmreader = new StreamReader(@"F:\Documents\SHSU\SHSU Spring 2023\Compiler Design\compiler_files\app\reserved_words.txt");
-            String line;
-            //List  to hold reserved words
-            List<String> reserved = new List<string>();
-
-            while ((line = pgmreader.ReadLine()) != null)
-            {
-                reserved.Add(line);
-            }
-            Console.WriteLine(reserved.Contains("Big Yoshi"));
-            foreach (String item in reserved)
-            {
-                Console.WriteLine(item);
-            }
-            pgmreader.Close();
-            //pgmreader = new StreamReader ()
-
-        }
         static void Main(String[] args)
         {
 
             String[] tokenArr = tokenList();
 
+            Console.WriteLine("-----------------------");
 
-
-            // tokenClassifier(tokenArr);
-
-            //statetable bigTest = new statetable();
-            //bigTest.dfsa();
-
-            // foreach (String item in tokenArr)
-            // {
-            //     Console.WriteLine(item);
-            // }
+            for (int i = 0; i < tokenArr.GetLength(0); i++)
+            {
+                Console.WriteLine(tokenArr[i]);
+            }
         }
 
     }
