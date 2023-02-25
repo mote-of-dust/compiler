@@ -51,6 +51,29 @@ namespace app
                 Console.Write('\n');
             }
 
+            /*
+            Code to look up next state in table based on current state and input
+
+            This works! good start to the day.
+             */
+
+            int curstate = 0;
+            int upcomingstate;
+            char tokenCh = 'L';
+
+            for (int i = 0; i < statelist[0].GetLength(0); i++)
+            {
+                if (statelist[0][i] == tokenCh.ToString())
+                {
+                    Console.WriteLine("Next state is: " + statelist[curstate + 1][i]);
+                }
+                else
+                {
+                    Console.WriteLine("False");
+                }
+            }
+
+
         }
     }
 }
