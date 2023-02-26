@@ -403,6 +403,9 @@ namespace app
             {
                 Console.WriteLine(tokenArr[i]);
             }
+
+            tokenTyping typer = new tokenTyping();
+            typer.createTokenCsv(tokenArr);
         }
 
     }
