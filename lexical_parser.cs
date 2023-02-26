@@ -37,7 +37,11 @@ namespace app
             // temp char variable to hold the character the file reader is reading.
             char ch;
             char chSym;
+            /*curstate is a variable that holds the current state you are in via the previous element in streamreader.
+              next state is found by using curstate as a column+1 index. */
             int curstate = 0;
+
+            /* next state is the state found via the state table based on your current state, and the symbol found via streamreader. */
             int nextstate = 0;
             int staterow = 0;
 
@@ -45,26 +49,17 @@ namespace app
             statetable createTable = new statetable();
             List<String[]> statetab = createTable.dfsa();
 
-            // for (int i = 0; i < statetab[0].GetLength(0); i++)
-            // {
-            //     String[] temp = statetab[i];
-            //     for (int j = 0; j < temp.GetLength(0); j++)
-            //     {
-            //         Console.Write(statetab[i][j] + ' ');
-            //     }
-            //     Console.Write('\n');
-            // }
 
 
 
-            /* For now the path to the test code path is hardcoded, but could later be easily switch to user I/O */
             StreamReader pgmreader = new StreamReader(@"F:\Documents\SHSU\SHSU Spring 2023\Compiler Design\compiler_files\app\PGM2.txt");
             while (pgmreader.Peek() > -1)
             {
                 ch = (char)pgmreader.Read();
+                // Console.WriteLine("Next char read is: " + ch.ToString());
 
-                Console.WriteLine("Is " + ch + " a letter: ");
-                Console.WriteLine(Char.IsLetter(ch));
+                // Console.WriteLine("Is " + ch + " a letter: ");
+                // Console.WriteLine(Char.IsLetter(ch));
 
 
                 if (Char.IsLetter(ch))
@@ -75,9 +70,13 @@ namespace app
                 {
                     chSym = 'D';
                 }
-                else if (ch == '\t' || ch == '\n')
+                else if (Char.IsWhiteSpace(ch) || ch == '\n')
                 {
                     chSym = ' ';
+                }
+                else if (ch == ',')
+                {
+                    chSym = '|';
                 }
                 else
                 {
@@ -90,13 +89,14 @@ namespace app
                     if (statetab[0][staterow] == chSym.ToString())
                     {
                         nextstate = Convert.ToInt32(statetab[curstate + 1][staterow]);
-                        Console.WriteLine("Next state for char " + ch + " is " + nextstate.ToString());
+                        // Console.WriteLine("Next state for char " + ch + " is " + nextstate.ToString());
                         //Console.WriteLine("Next state is: " + statetab[curstate + 1][i]);
                         break;
                     }
                     else
                     {
-                        Console.WriteLine("False");
+                        // Console.WriteLine(statetab[0][staterow]);
+                        // Console.WriteLine("False");
                     }
                 }
 
@@ -108,7 +108,7 @@ namespace app
 
                     case 0:
                         {
-                            if (tempvar != "")
+                            if (!(String.IsNullOrWhiteSpace(tempvar)))
                             {
                                 tokenList.Add(tempvar);
                                 tempvar = "";
@@ -125,7 +125,7 @@ namespace app
                         {
                             if (curstate == 0)
                             {
-                                tempvar = ch.ToString() + " <mop>";
+                                tempvar = ch.ToString();
                                 tokenList.Add(tempvar);
                                 tempvar = "";
                                 curstate = 0;
@@ -134,7 +134,7 @@ namespace app
                             else
                             {
                                 tokenList.Add(tempvar);
-                                tempvar = ch.ToString() + " <mop>";
+                                tempvar = ch.ToString();
                                 tokenList.Add(tempvar);
                                 tempvar = "";
                                 curstate = 0;
@@ -150,11 +150,19 @@ namespace app
                         }
                     case 4:
                         {
-                            tempvar += "<int>";
                             tokenList.Add(tempvar);
-                            tempvar = "";
-                            curstate = 0;
-                            break;
+                            if (Char.IsWhiteSpace(ch))
+                            {
+                                tempvar = "";
+                                curstate = 0;
+                                break;
+                            }
+                            else
+                            {
+                                tempvar = ch.ToString();
+                                curstate = 0;
+                                break;
+                            }
                         }
 
                     case 5:
@@ -165,29 +173,72 @@ namespace app
                         }
                     case 6:
                         {
-                            reservewords ResObj = new reservewords();
-                            String[] ResArr = ResObj.createResArr();
-                            if (Array.IndexOf(ResArr, tempvar) >= 0)
-                            {
-                                tokenList.Add(tempvar + " <$" + ResArr[Array.IndexOf(ResArr, tempvar)] + ">");
-                            }
-                            else
-                            {
-                                tokenList.Add(tempvar + " " + statetab[nextstate + 1][1]);
-                            }
 
-                            if (ch == ' ')
+                            tokenList.Add(tempvar);
+                            if (Char.IsWhiteSpace(ch))
                             {
                                 tempvar = "";
+                                curstate = 0;
+                                break;
                             }
                             else
                             {
                                 tempvar = ch.ToString();
+                                tokenList.Add(tempvar);
+                                tempvar = "";
+                                curstate = 0;
+                                break;
                             }
-                            curstate = Convert.ToInt32(statetab[1][staterow]);
-                            //Console.WriteLine("Next state")
-                            break;
 
+
+                            // //checking if the var is touching a + , * / etc.
+
+                            // // if (ch == ' ')
+                            // // {
+                            // //     tempvar = "";
+                            // // }
+                            // // else
+                            // // {
+                            // //     tempvar = ch.ToString();
+                            // // }
+                            // // curstate = Convert.ToInt32(statetab[1][staterow]);
+                            // tempvar = "";
+                            // curstate = 0;
+                            // //Console.WriteLine("Next state")
+                            // break;
+
+                        }
+                    case 7:
+                        {
+                            tempvar += ch.ToString();
+                            curstate = nextstate;
+                            break;
+                        }
+                    case 8:
+                        {
+                            tempvar = "";
+                            curstate = nextstate;
+                            break;
+                        }
+                    case 9:
+                        {
+                            // tempvar = "";
+                            // Console.WriteLine("before: " + tempvar);
+                            // if (nextstate == 0)
+                            // {
+                            //     tempvar = "";
+                            // }
+                            // Console.WriteLine("After: " + tempvar);
+                            // Console.WriteLine(nextstate);
+                            curstate = nextstate;
+                            break;
+                        }
+                    case 10:
+                        {
+                            tokenList.Add(tempvar);
+                            tempvar = "";
+                            curstate = 0;
+                            break;
                         }
                     case 11:
                         {
@@ -197,7 +248,119 @@ namespace app
                         }
                     case 12:
                         {
-                            tempvar += " " + statetab[nextstate + 1][1];
+                            tokenList.Add(tempvar);
+                            tempvar = "";
+                            curstate = 0;
+                            break;
+                        }
+                    case 13:
+                        {
+                            tempvar += ch;
+                            tokenList.Add(tempvar);
+                            tempvar = "";
+                            curstate = 0;
+                            break;
+                        }
+                    case 14:
+                        {
+                            tempvar += ch;
+                            curstate = nextstate;
+                            break;
+                        }
+                    case 15:
+                        {
+                            tokenList.Add(tempvar);
+                            tempvar = "";
+                            curstate = 0;
+                            break;
+                        }
+                    case 16:
+                        {
+                            tempvar += ch.ToString();
+                            tokenList.Add(tempvar);
+                            curstate = 0;
+                            break;
+                        }
+                    case 17:
+                        {
+                            tempvar = ch.ToString();
+                            tokenList.Add(tempvar);
+                            tempvar = "";
+                            curstate = 0;
+                            break;
+                        }
+                    case 18:
+                        {
+                            tempvar = ch.ToString();
+                            tokenList.Add(tempvar);
+                            tempvar = "";
+                            curstate = 0;
+                            break;
+                        }
+                    case 19:
+                        {
+                            tempvar = ch.ToString();
+                            tokenList.Add(tempvar);
+                            tempvar = "";
+                            curstate = 0;
+                            break;
+                        }
+                    case 20:
+                        {
+                            tempvar = ch.ToString();
+                            tokenList.Add(tempvar);
+                            tempvar = "";
+                            curstate = 0;
+                            break;
+                        }
+                    case 21:
+                        {
+                            tempvar += ch.ToString();
+                            tokenList.Add(tempvar);
+                            tempvar = "";
+                            curstate = 0;
+                            break;
+                        }
+                    case 22:
+                        {
+                            tempvar += ch.ToString();
+                            tokenList.Add(tempvar);
+                            tempvar = "";
+                            curstate = 0;
+                            break;
+                        }
+                    case 23:
+                        {
+                            tempvar += ch.ToString();
+                            curstate = nextstate;
+                            break;
+                        }
+                    case 24:
+                        {
+                            tokenList.Add(tempvar);
+                            tempvar = "";
+                            curstate = 0;
+                            break;
+                        }
+                    case 25:
+                        {
+                            tempvar += ch.ToString();
+                            tokenList.Add(tempvar);
+                            tempvar = "";
+                            curstate = 0;
+                            break;
+                        }
+                    case 26:
+                        {
+                            tempvar += ch.ToString();
+                            tokenList.Add(tempvar);
+                            tempvar = "";
+                            curstate = 0;
+                            break;
+                        }
+                    case 27:
+                        {
+                            tempvar += ch.ToString();
                             tokenList.Add(tempvar);
                             tempvar = "";
                             curstate = 0;
@@ -205,19 +368,21 @@ namespace app
                         }
 
                     default:
+                        Console.WriteLine("Error!");
+                        curstate = 0;
                         break;
 
                 }
 
                 // catches edge case of last character to be read, and correctly types it.
-                if (!(pgmreader.Peek() > -1))
-                {
-                    //Console.WriteLine("Current state = " + curstate);
-                    //Console.WriteLine(statetab[curstate + 1][7]);
-                    int tempstate = Convert.ToInt32(statetab[curstate + 1][7]);
-                    tokenList.Add(tempvar + " " + statetab[tempstate + 1][1]);
-                    //Console.WriteLine("test " + statetab[tempstate + 1][1]);
-                }
+                // if (!(pgmreader.Peek() > -1))
+                // {
+                //     //Console.WriteLine("Current state = " + curstate);
+                //     //Console.WriteLine(statetab[curstate + 1][7]);
+                //     int tempstate = Convert.ToInt32(statetab[curstate + 1][7]);
+                //     tokenList.Add(tempvar + " " + statetab[tempstate + 1][1]);
+                //     //Console.WriteLine("test " + statetab[tempstate + 1][1]);
+                // }
             }
 
             tokenvars = tokenList.ToArray();

@@ -15,19 +15,19 @@ namespace app
             {
                 reserved.Add(line);
             }
-            Console.WriteLine(reserved.Contains("Big Yoshi"));
-            foreach (String item in reserved)
-            {
-                Console.WriteLine(item);
-            }
+            // Console.WriteLine(reserved.Contains("Big Yoshi"));
+            // foreach (String item in reserved)
+            // {
+            //     Console.WriteLine(item);
+            // }
             pgmreader.Close();
 
             String[] resArr = reserved.ToArray();
 
-            for (int i = 0; i < resArr.GetLength(0); i++)
-            {
-                Console.WriteLine(resArr[i]);
-            }
+            // for (int i = 0; i < resArr.GetLength(0); i++)
+            // {
+            //     Console.WriteLine(resArr[i]);
+            // }
             //pgmreader = new StreamReader ()
 
             return resArr;
