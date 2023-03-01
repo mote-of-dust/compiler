@@ -52,7 +52,7 @@ namespace app
 
 
 
-            StreamReader pgmreader = new StreamReader(@"F:\Documents\SHSU\SHSU Spring 2023\Compiler Design\compiler_files\app\PGM2.txt");
+            StreamReader pgmreader = new StreamReader(@"F:\Documents\SHSU\SHSU Spring 2023\Compiler Design\compiler_files\app\PGM1.txt");
             while (pgmreader.Peek() > -1)
             {
                 ch = (char)pgmreader.Read();
@@ -406,6 +406,9 @@ namespace app
 
             tokenTyping typer = new tokenTyping();
             typer.createTokenCsv(tokenArr);
+
+            symTabCreator newTab = new symTabCreator();
+            newTab.createTable(tokenArr);
         }
 
     }

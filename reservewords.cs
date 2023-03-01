@@ -6,7 +6,7 @@ namespace app
     {
         public String[] createResArr()
         {
-            StreamReader pgmreader = new StreamReader(@"F:\Documents\SHSU\SHSU Spring 2023\Compiler Design\compiler_files\app\reserved_words.txt");
+            StreamReader pgmreader = new StreamReader(@"F:\Documents\SHSU\SHSU Spring 2023\Compiler Design\compiler_files\app\special_chars.txt");
             String line;
             //List  to hold reserved words
             List<String> reserved = new List<string>();
@@ -15,11 +15,6 @@ namespace app
             {
                 reserved.Add(line);
             }
-            // Console.WriteLine(reserved.Contains("Big Yoshi"));
-            // foreach (String item in reserved)
-            // {
-            //     Console.WriteLine(item);
-            // }
             pgmreader.Close();
 
             String[] resArr = reserved.ToArray();
@@ -28,7 +23,7 @@ namespace app
             // {
             //     Console.WriteLine(resArr[i]);
             // }
-            //pgmreader = new StreamReader ()
+            // pgmreader = new StreamReader()
 
             return resArr;
         }
