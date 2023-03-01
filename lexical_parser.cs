@@ -366,6 +366,20 @@ namespace app
                             curstate = 0;
                             break;
                         }
+                    case 28:
+                        {
+                            tempvar += ch;
+                            curstate = nextstate;
+                            break;
+                        }
+                    case 29:
+                        {
+                            tempvar += ch.ToString();
+                            tokenList.Add(tempvar);
+                            tempvar = "";
+                            curstate = 0;
+                            break;
+                        }
 
                     default:
                         Console.WriteLine("Error!");

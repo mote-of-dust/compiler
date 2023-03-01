@@ -8,7 +8,7 @@ CLASS LargestCommonDenominator{
           A = X;  B = Y;  Z = 0;
           WHILE B > 0 DO {
                  IF ODD B THEN Z = Z + A;
-                 A = 2 * A;  B = B / 2
+                 A = 2 * A;  B = B / 2;
           }
     }
 
@@ -20,8 +20,8 @@ CLASS LargestCommonDenominator{
           WHILE W > Y DO {
                  Q = 2 * Q;  W = W / 2;
                  IF W <= R THEN {
-                       R = R – W;
-                       Q = Q + 1
+                       R = R - W;
+                       Q = Q + 1;
                 }
          }
     }
@@ -31,14 +31,14 @@ CLASS LargestCommonDenominator{
 
           F = X;  G = Y;
           WHILE F != G DO {
-                 IF F < G THEN G = G – F;
-                 IF G < F THEN F = F – G;
+                 IF F < G THEN G = G - F;
+                 IF G < F THEN F = F - G;
           }
-          Z = F
+          Z = F;
     }
 
     /*  Main Program.  */
     X = M;  Y = N  CALL Multiply();
     X = 25;  Y = 3;  CALL Divide();
-    X = 84;  Y = 36;  CALL GCD()
+    X = 84;  Y = 36;  CALL GCD();
 }
