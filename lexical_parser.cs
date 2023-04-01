@@ -26,7 +26,7 @@ namespace app
 {
     class lexical_parser
     {
-        static String[] tokenList()
+        static String[] tokenList(String filePath)
         {
             // temp str variable to hold reserved words as well as variable names and literal integers
             String tempvar = "";
@@ -52,7 +52,7 @@ namespace app
 
 
 
-            StreamReader pgmreader = new StreamReader(@"F:\Documents\SHSU\SHSU Spring 2023\Compiler Design\compiler_files\app\PGM1.txt");
+            StreamReader pgmreader = new StreamReader(filePath);
             while (pgmreader.Peek() > -1)
             {
                 ch = (char)pgmreader.Read();
@@ -408,8 +408,9 @@ namespace app
 
         static void Main(String[] args)
         {
+            String filePath = @"F:\Documents\SHSU\SHSU Spring 2023\Compiler Design\compiler_files\app\PGM1.txt";
 
-            String[] tokenArr = tokenList();
+            String[] tokenArr = tokenList(filePath);
 
             Console.WriteLine("-----------------------");
 
@@ -423,6 +424,11 @@ namespace app
 
             symTabCreator newTab = new symTabCreator();
             newTab.createTable(tokenArr);
+
+            Console.WriteLine("~~~~~Lexical portion finished~~~~~");
+
+            syntaxAnalyzer pushdown = new syntaxAnalyzer();
+            pushdown.createPushdown(tokenArr);
         }
 
     }
