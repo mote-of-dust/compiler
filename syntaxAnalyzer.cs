@@ -4,6 +4,32 @@ namespace app
 {
     class syntaxAnalyzer
     {
+        // //creates the operator precedence matrix based on the operator precedence table CSV input file
+        // public List<String[]> opTable()
+        // {
+        //     var csvpath = @"F:\Documents\SHSU\SHSU Spring 2023\Compiler Design\compiler_files\app\op_prec.csv";
+        //     StreamReader srOp = new StreamReader(csvpath);
+        //     var opList = new List<String[]>();
+        //     int rowsize = 0;
+        //     //int nextstate = 1;
+
+        //     while (!srOp.EndOfStream)
+        //     {
+        //         String[] nextline = srOp.ReadLine().Split(',');
+        //         opList.Add(nextline);
+        //         rowsize++;
+        //     }
+
+        //     foreach (var array in opList)
+        //     {
+        //         foreach (var item in array)
+        //         {
+        //             Console.Write(item + " ");
+        //         }
+        //         Console.Write('\n');
+        //     }
+        //     return opList;
+        // }
         public void createPushdown(String[] tokenArr)
         {
             /*
@@ -22,6 +48,14 @@ namespace app
             string prevTerm;
             //holds the resulting precedence from the look up table to determine if a pop needs to happen.
             string precSign;
+
+
+
+            // The following three lines create the operator precedence 2d matrix, by reusing the program
+            // which created the original precedence table in the lexical scanner pass. reusability!modularity! p r o f e s s i o n a l g r a d e
+            string csvpath = @"F:\Documents\SHSU\SHSU Spring 2023\Compiler Design\compiler_files\app\op_prec.csv";
+            statetable opTabCreator = new statetable();
+            List<string[]> opPrecTab = opTabCreator.dfsa(csvpath);
 
             opwords opCreator = new opwords();
             String[] opArr = opCreator.createOpArr();

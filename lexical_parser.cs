@@ -52,8 +52,10 @@ namespace app
             int staterow = 0;
 
 
+            // The following three lines creates the precedence table needed for the state machine to work.
             statetable createTable = new statetable();
-            List<String[]> statetab = createTable.dfsa();
+            string csvpath = @"F:\Documents\SHSU\SHSU Spring 2023\Compiler Design\compiler_files\app\marc_parse_table.csv";
+            List<String[]> statetab = createTable.dfsa(csvpath);
 
 
 
