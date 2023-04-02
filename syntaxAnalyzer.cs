@@ -18,6 +18,10 @@ namespace app
             var symArr = new List<String[]>();
             Boolean inClass = false;
             int rowsize = 0;
+            //holds value of previous found terminal, to more easily determine precedence via operator precidence table.
+            string prevTerm;
+            //holds the resulting precedence from the look up table to determine if a pop needs to happen.
+            string precSign;
 
             opwords opCreator = new opwords();
             String[] opArr = opCreator.createOpArr();
@@ -50,6 +54,7 @@ namespace app
                     {
                         Console.WriteLine("Now entering program! Inserting " + tokenArr[i] + " into pushdown stack.");
                         inClass = true;
+                        prevTerm = tokenArr[i];
                     }
                     else
                     {
@@ -60,6 +65,8 @@ namespace app
                 else
                 {
                     Boolean pushed = false;
+                    //foreach loop to check if the symbol in question is within the symbol table, which would indicate a 'nonterminal'
+                    // aka a non-operator (variable, literal integer, etc.)
                     foreach (var array in symArr)
                     {
                         if (array[0] == tokenArr[i])
@@ -73,12 +80,25 @@ namespace app
                             // Console.WriteLine("tokenArr[i] = " + tokenArr[i]);
                         }
                     }
+                    //now checks, if not in symbol table, if it is an operator/'terminal'. if so, a function is
+                    //called to check precedence with last found terminal to determine if pop is needed.
                     if (pushed == false)
                     {
                         //need to implement op/delim array creator function to check.
                         if (opArr.Contains(tokenArr[i]))
                         {
                             Console.WriteLine("Found TERMINAL " + tokenArr[i] + " within operator list. Will look up operator on precedence table...");
+                            // precSign = <function call>
+                            /* if (precSign == ">")
+                                {
+                                    <function to pop correct lines, create machine code via switch, 
+                                    and create T[x] temp and place in stack if needed.>                                
+                                }
+
+                                more logic to be added here I think...
+                            */
+                            //update prevTerm at the end to continue the cycle of easily recalling previous terminal.
+                            prevTerm = tokenArr[i];
 
                         }
 

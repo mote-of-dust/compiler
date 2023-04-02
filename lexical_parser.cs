@@ -1,7 +1,17 @@
 ﻿using System;
 
 /*
-THINGS TO WORK ON:  (2-25-2023)
+THINGS TO WORK ON:  
+                    (4-03-2023)
+                    Syntax analyzer started. Simple process to scan token array and symbol
+                    table can place the correct items into a pushdown stack. CSV of
+                    operator precedence table has been made, and logic to implement the
+                    check of precedence has been started. The function itself still
+                    needs to be implemented, though similar functionality has already
+                    been coded with the parse table csv, which can be partially used
+                    for this purpose as well.
+
+                    (2-25-2023)
                     class completed which takes in the fsa state csv and creates
                     a List<String[]> variable out of it. Switch case statements have
                     begun to be adjusted to make it's decisions based off the csv,
@@ -9,10 +19,6 @@ THINGS TO WORK ON:  (2-25-2023)
                     token appears to be working (for what is currently implemented)
                     Rest of the switch cases Need to be completed,after which all that 
                     is left is completing the symbol table based off of the token-list.
-
-
-
-
 
 
                     (2- 22-2023)
