@@ -1,0 +1,5 @@
+CLASS PGM3{
+	CONST M = 7;
+
+	X = M + 12;
+}
