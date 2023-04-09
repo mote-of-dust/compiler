@@ -87,6 +87,15 @@ namespace app
                     dsAddr += 2;
                     added_symbols.Add(tokenlist[i][0]);
                 }
+
+
+            }
+            string tempo = "T";
+            // lastly, adding 10 temporary variables
+            for (int i = 1; i < 11; i++)
+            {
+                file.WriteLineAsync((tempo + i.ToString()) + "," + "<var>" + "," + "?" + "," + dsAddr + "," + "DS");
+                dsAddr += 2;
             }
         }
     }

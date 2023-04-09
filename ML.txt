@@ -1,0 +1,9 @@
+mov ax, 7
+move [M], ax
+
+mov ax, [M]
+add ax, 12
+move [T1], ax
+
+mov ax, [T1]
+move [X], ax

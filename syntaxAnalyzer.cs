@@ -78,12 +78,14 @@ namespace app
             pushdown.RemoveAt(opIndx);
             pushdown.RemoveAt((opIndx - 1));
 
-            //FUNCTION TO CALL SWITCHCASE AND MAKE ML CODE
+
 
             Console.WriteLine("PSA after pop: ");
             if (prevTerm != "=")
             {
                 tCounter++;
+                //FUNCTION TO CALL SWITCHCASE AND MAKE ML CODE
+                mlWriter(popped);
                 pushdown.Add(tempo + tCounter.ToString());
                 foreach (var item in pushdown)
                 {
@@ -93,6 +95,8 @@ namespace app
             }
             else
             {
+                //FUNCTION TO CALL SWITCHCASE AND MAKE ML CODE
+                mlWriter(popped);
                 foreach (var item in pushdown)
                 {
                     Console.WriteLine(item);
@@ -104,7 +108,81 @@ namespace app
         // popstack() will call this function once the popped list<string> is created. This function will append a file to
         public void mlWriter(List<string> popped)
         {
+            TextWriter tw = File.AppendText(@"F:\Documents\SHSU\SHSU Spring 2023\Compiler Design\compiler_files\app\ML.txt");
             // create a switch case based on item at index 1 (middle index)
+            if (popped.Count == 3)
+            {
+                switch (popped[1])
+                {
+                    case "+":
+                        {
+                            if (int.TryParse(popped[0], out _))
+                            {
+                                tw.WriteLine("mov ax, " + popped[0]);
+                            }
+                            else
+                            {
+                                tw.WriteLine("mov ax, [" + popped[0] + "]");
+                            }
+                            if (int.TryParse(popped[2], out _))
+                            {
+                                tw.WriteLine("add ax, " + popped[2]);
+                            }
+                            else
+                            {
+                                tw.WriteLine("add ax, [" + popped[2] + "]");
+                            }
+
+                            tw.WriteLine("move [T" + tCounter + "], ax");
+                            break;
+                        }
+                    case "-":
+                        {
+                            if (int.TryParse(popped[0], out _))
+                            {
+                                tw.WriteLine("mov ax, " + popped[0]);
+                            }
+                            else
+                            {
+                                tw.WriteLine("mov ax, [" + popped[0] + "]");
+                            }
+                            if (int.TryParse(popped[2], out _))
+                            {
+                                tw.WriteLine("sub ax, " + popped[2]);
+                            }
+                            else
+                            {
+                                tw.WriteLine("sub ax, [" + popped[2] + "]");
+                            }
+
+                            tw.WriteLine("move [T" + tCounter + "], ax");
+                            break;
+                        }
+                    case "=":
+                        {
+
+                            if (int.TryParse(popped[2], out _))
+                            {
+                                tw.WriteLine("mov ax, " + popped[2]);
+                            }
+                            else
+                            {
+                                tw.WriteLine("mov ax, [" + popped[2] + "]");
+                            }
+
+                            tw.WriteLine("move [" + popped[0] + "], ax");
+                            break;
+                        }
+                    default:
+                        break;
+                }
+            }
+            else
+            {
+                Console.WriteLine("ISUUUUUUUUUUUE");
+            }
+            tw.Close();
+
         }
 
         public void createPushdown(String[] tokenArr)

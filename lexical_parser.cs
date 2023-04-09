@@ -435,6 +435,9 @@ namespace app
 
             Console.WriteLine("~~~~~Lexical portion finished~~~~~");
 
+            var MLcreator = File.Create(@"F:\Documents\SHSU\SHSU Spring 2023\Compiler Design\compiler_files\app\ML.txt");
+            MLcreator.Close();
+
             syntaxAnalyzer pushdown = new syntaxAnalyzer();
             pushdown.createPushdown(tokenArr);
         }
