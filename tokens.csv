@@ -8,8 +8,16 @@ M|<$CONSTVAR>
 ;|<semi>
 X|<var>
 =|<assignment>
+(|<lp>
+5|<$litInt>
+*|<mop>
+(|<lp>
 M|<var>
 +|<addop>
 12|<$litInt>
+)|<rp>
+/|<mop>
+3|<$litInt>
+)|<rp>
 ;|<semi>
 }|<rb>

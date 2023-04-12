@@ -1,5 +1,5 @@
 CLASS PGM3{
 	CONST M = 7;
 
-	X = M + 12;
+	X = ( 5 * ( M + 12 ) / 3 );
 }

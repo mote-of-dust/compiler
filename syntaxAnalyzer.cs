@@ -133,7 +133,7 @@ namespace app
                                 tw.WriteLine("add ax, [" + popped[2] + "]");
                             }
 
-                            tw.WriteLine("move [T" + tCounter + "], ax");
+                            tw.WriteLine("move [T" + tCounter + "], ax\n");
                             break;
                         }
                     case "-":
@@ -155,7 +155,53 @@ namespace app
                                 tw.WriteLine("sub ax, [" + popped[2] + "]");
                             }
 
-                            tw.WriteLine("move [T" + tCounter + "], ax");
+                            tw.WriteLine("move [T" + tCounter + "], ax\n");
+                            break;
+                        }
+                    case "*":
+                        {
+                            if (int.TryParse(popped[0], out _))
+                            {
+                                tw.WriteLine("mov ax, " + popped[0]);
+                            }
+                            else
+                            {
+                                tw.WriteLine("mov ax, [" + popped[0] + "]");
+                            }
+                            if (int.TryParse(popped[2], out _))
+                            {
+                                tw.WriteLine("mul ax, " + popped[2]);
+                            }
+                            else
+                            {
+                                tw.WriteLine("mul ax, [" + popped[2] + "]");
+                            }
+
+                            tw.WriteLine("move [T" + tCounter + "], ax\n");
+                            break;
+                        }
+                    case "/":
+                        {
+                            tw.WriteLine("mov dx, 0");
+                            if (int.TryParse(popped[0], out _))
+                            {
+                                tw.WriteLine("mov ax, " + popped[0]);
+                            }
+                            else
+                            {
+                                tw.WriteLine("mov ax, [" + popped[0] + "]");
+                            }
+                            if (int.TryParse(popped[2], out _))
+                            {
+                                tw.WriteLine("mov bx, " + popped[2]);
+                            }
+                            else
+                            {
+                                tw.WriteLine("mov bx, [" + popped[2] + "]");
+                            }
+                            tw.WriteLine("div bx");
+
+                            tw.WriteLine("move [T" + tCounter + "], ax\n");
                             break;
                         }
                     case "=":
@@ -170,7 +216,7 @@ namespace app
                                 tw.WriteLine("mov ax, [" + popped[2] + "]");
                             }
 
-                            tw.WriteLine("move [" + popped[0] + "], ax");
+                            tw.WriteLine("move [" + popped[0] + "], ax\n");
                             break;
                         }
                     default:
@@ -179,10 +225,21 @@ namespace app
             }
             else
             {
-                Console.WriteLine("ISUUUUUUUUUUUE");
+                Console.WriteLine("ISSUUUUUUUUUUUE");
             }
             tw.Close();
 
+        }
+        public void equalPop(List<string> pushdown, string prevTerm)
+        {
+            for (int i = pushdown.Count - 1; i > 0; i--)
+            {
+                if (pushdown[i] == prevTerm)
+                {
+                    pushdown.RemoveAt(i);
+                    break;
+                }
+            }
         }
 
         public void createPushdown(String[] tokenArr)
@@ -302,8 +359,32 @@ namespace app
                                 prevTerm = popstack(pushdown, prevTerm); //update prevTerm during this step
                                 if (tokenArr[i] != ";")
                                 {
-                                    pushdown.Add(tokenArr[i]);
+                                    i = i - 1;
+                                    Console.WriteLine("retesting item...");
+                                    //pushdown.Add(tokenArr[i]);
                                 }
+
+                            }
+                            else if (precSign == "=")
+                            {
+                                Console.WriteLine("Special logic needed for two token pop");
+                                //pushdown.RemoveAt(pushdown.Count - 1);
+                                equalPop(pushdown, prevTerm);
+                                Console.WriteLine("new pusdhdown after equal pop: ");
+                                foreach (var item in pushdown)
+                                {
+                                    Console.WriteLine(item);
+                                }
+                                for (int j = pushdown.Count - 1; j > 0; j--)
+                                {
+                                    if (opArr.Contains(pushdown[j]))
+                                    {
+                                        prevTerm = pushdown[j];
+                                        break;
+                                    }
+                                }
+
+
 
                             }
                             else if (precSign == "@")
