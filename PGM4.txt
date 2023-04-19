@@ -1,10 +1,11 @@
 CLASS PGM4{
     IF ( X == 5 ) THEN {
+        IF ( Y == 6 ) THEN {
+            X = 3;
+        }
         Y = 4;
     }
 
-    IF ( Y == 6 ) THEN {
-        X = 3;
-    }
+
     VAR X = 7 + Y;
 }

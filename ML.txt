@@ -8,7 +8,7 @@ stderr		equ	3
 section .data		;used to declare constants
 	X	 db	?
 	5	 db	5
-	Y	 db	4
+	Y	 db	?
 	6	 db	6
 	T1	 db	?
 	T2	 db	?
@@ -32,10 +32,6 @@ PGM4:
 	cmp ax, 5
 	JNE L1
 
-	mov ax, 4
-	mov [Y], ax
-
-L1:	nop
 	mov ax, [Y]
 	cmp ax, 6
 	JNE L2
@@ -44,6 +40,10 @@ L1:	nop
 	mov [X], ax
 
 L2:	nop
+	mov ax, 4
+	mov [Y], ax
+
+L1:	nop
 	mov ax, 7
 	add ax, [Y]
 	move [T1], ax

@@ -1,7 +1,7 @@
 PGM4,<$PGMNAME>,,0,CS
 X,<var>,?,0,DS
 5,<$litInt>,5,2,DS
-Y,<var>,4,4,DS
+Y,<var>,?,4,DS
 6,<$litInt>,6,6,DS
 T1,<var>,?,8,DS
 T2,<var>,?,10,DS

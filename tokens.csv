@@ -9,11 +9,6 @@ X|<var>
 )|<rp>
 THEN|<$THEN>
 {|<lb>
-Y|<var>
-=|<assignment>
-4|<$litInt>
-;|<semi>
-}|<rb>
 IF|<$IF>
 (|<lp>
 Y|<var>
@@ -25,6 +20,11 @@ THEN|<$THEN>
 X|<var>
 =|<assignment>
 3|<$litInt>
+;|<semi>
+}|<rb>
+Y|<var>
+=|<assignment>
+4|<$litInt>
 ;|<semi>
 }|<rb>
 VAR|<$VAR>
