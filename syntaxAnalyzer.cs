@@ -406,7 +406,12 @@ namespace app
                 }
 
             }
-            tw.WriteLine("\nsection .bss");
+            tw.WriteLine("\nsection .bss		;used to declare uninitialized variables\n");
+            tw.WriteLine("\tTempChar        RESB    1              ;temp space for use by GetNextChar");
+            tw.WriteLine("\ttestchar        RESB    1");
+            tw.WriteLine("\tReadInt         RESW    1              ;Temporary storage GetAnInteger.	");
+            tw.WriteLine("\ttempint         RESW	1              ;Used in converting to base ten.");
+            tw.WriteLine("\tnegflag         RESB    1              ;P=positive, N=negative\n");
             tw.WriteLine("\tglobal " + pgmName + "\t\t;main program");
             tw.WriteLine("section .text\n");
             tw.WriteLine(pgmName + ":");

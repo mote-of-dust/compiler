@@ -16,7 +16,14 @@ section .data		;used to declare constants
 	T4	 db	?
 	T5	 db	?
 
-section .bss
+section .bss		;used to declare uninitialized variables
+
+	TempChar        RESB    1              ;temp space for use by GetNextChar
+	testchar        RESB    1
+	ReadInt         RESW    1              ;Temporary storage GetAnInteger.	
+	tempint         RESW	1              ;Used in converting to base ten.
+	negflag         RESB    1              ;P=positive, N=negative
+
 	global PGM4		;main program
 section .text
 
