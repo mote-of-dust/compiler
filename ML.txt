@@ -1,20 +1,8 @@
-mov ax, 7
-move [M], ax
+mov ax, [X]
+cmp ax, 5
+JNE L1
 
-mov ax, [M]
-add ax, 12
-move [T1], ax
-
-mov ax, 5
-mul ax, [T1]
-move [T2], ax
-
-mov dx, 0
-mov ax, [T2]
-mov bx, 3
-div bx
-move [T3], ax
-
-mov ax, [T3]
-move [X], ax
+mov ax, [Y]
+cmp ax, 3
+JL L2
 

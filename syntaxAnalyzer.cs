@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 
 namespace app
 {
@@ -6,6 +7,7 @@ namespace app
     class syntaxAnalyzer
     {
         public static int tCounter = 0;
+        public static int lCounter = 1;
 
         // find the precedence between current and previous token, and returns the symbol found.
         public String findSym(String prevTerm, String curToken, List<string[]> opPrecTab)
@@ -103,6 +105,47 @@ namespace app
                 }
                 return pushdown.Last();
             }
+        }
+
+        public string relopPop(List<string> pushdown, string prevTerm)
+        {
+            //string tempo = "L";
+            Console.WriteLine("Pre-pop: ");
+            foreach (var item in pushdown)
+            {
+                Console.WriteLine(item);
+            }
+            int opIndx = 0;
+            List<string> popped = new List<string>();
+            for (int i = (pushdown.Count() - 1); i >= 0; i--)
+            {
+                if (prevTerm == pushdown[i])
+                {
+                    opIndx = i;
+                    break;
+                }
+            }
+            Console.WriteLine("prevTerm: " + prevTerm + " found at index " + opIndx);
+            popped.Add(pushdown[opIndx - 1]);
+            popped.Add(pushdown[opIndx]);
+            popped.Add(pushdown[opIndx + 1]);
+            pushdown.RemoveAt((opIndx + 1));
+            pushdown.RemoveAt(opIndx);
+            pushdown.RemoveAt((opIndx - 1));
+
+
+
+            Console.WriteLine("PSA after pop: ");
+            //FUNCTION TO CALL SWITCHCASE AND MAKE ML CODE
+            mlWriter(popped);
+            //pushdown.Add(tempo + tCounter.ToString());
+            foreach (var item in pushdown)
+            {
+                Console.WriteLine(item);
+            }
+            Console.WriteLine("New prevTerm: " + pushdown[(pushdown.Count) - 1]);
+            return pushdown[(pushdown.Count) - 1];
+
         }
 
         // popstack() will call this function once the popped list<string> is created. This function will append a file to
@@ -219,6 +262,103 @@ namespace app
                             tw.WriteLine("move [" + popped[0] + "], ax\n");
                             break;
                         }
+
+                    case "==":
+                        {
+                            if (int.TryParse(popped[0], out _))
+                            {
+                                tw.WriteLine("mov ax, " + popped[0]);
+                            }
+                            else
+                            {
+                                tw.WriteLine("mov ax, [" + popped[0] + "]");
+                            }
+                            if (int.TryParse(popped[2], out _))
+                            {
+                                tw.WriteLine("cmp ax, " + popped[2]);
+                            }
+                            else
+                            {
+                                tw.WriteLine("cmp ax, [" + popped[2] + "]");
+                            }
+
+                            tw.WriteLine("JNE L" + lCounter + '\n');
+                            lCounter++;
+                            break;
+                        }
+
+                    case "!=":
+                        {
+                            if (int.TryParse(popped[0], out _))
+                            {
+                                tw.WriteLine("mov ax, " + popped[0]);
+                            }
+                            else
+                            {
+                                tw.WriteLine("mov ax, [" + popped[0] + "]");
+                            }
+                            if (int.TryParse(popped[2], out _))
+                            {
+                                tw.WriteLine("cmp ax, " + popped[2]);
+                            }
+                            else
+                            {
+                                tw.WriteLine("cmp ax, [" + popped[2] + "]");
+                            }
+
+                            tw.WriteLine("JE L" + lCounter + '\n');
+                            lCounter++;
+                            break;
+                        }
+                    case ">=":
+                        {
+                            if (int.TryParse(popped[0], out _))
+                            {
+                                tw.WriteLine("mov ax, " + popped[0]);
+                            }
+                            else
+                            {
+                                tw.WriteLine("mov ax, [" + popped[0] + "]");
+                            }
+                            if (int.TryParse(popped[2], out _))
+                            {
+                                tw.WriteLine("cmp ax, " + popped[2]);
+                            }
+                            else
+                            {
+                                tw.WriteLine("cmp ax, [" + popped[2] + "]");
+                            }
+
+                            tw.WriteLine("JL L" + lCounter + '\n');
+                            lCounter++;
+                            break;
+                        }
+                    case ">":
+                        {
+                            if (int.TryParse(popped[0], out _))
+                            {
+                                tw.WriteLine("mov ax, " + popped[0]);
+                            }
+                            else
+                            {
+                                tw.WriteLine("mov ax, [" + popped[0] + "]");
+                            }
+                            if (int.TryParse(popped[2], out _))
+                            {
+                                tw.WriteLine("cmp ax, " + popped[2]);
+                            }
+                            else
+                            {
+                                tw.WriteLine("cmp ax, [" + popped[2] + "]");
+                            }
+
+                            tw.WriteLine("JLE L" + lCounter + '\n');
+                            lCounter++;
+                            break;
+                        }
+
+
+
                     default:
                         break;
                 }
@@ -254,6 +394,12 @@ namespace app
             String SymTabPath = @"F:\Documents\SHSU\SHSU Spring 2023\Compiler Design\compiler_files\app\symbol_table.csv";
             StreamReader sr = new StreamReader(SymTabPath);
             var symArr = new List<String[]>();
+
+            //creating array to track if token is a relational operator.
+            String DoubOp = @"F:\Documents\SHSU\SHSU Spring 2023\Compiler Design\compiler_files\app\double_char_delims.txt";
+            StreamReader dr = new StreamReader(DoubOp);
+            var dOpArr = new List<String>();
+
             Boolean inClass = false;
             int rowsize = 0;
             //holds value of previous found terminal, to more easily determine precedence via operator precidence table.
@@ -271,6 +417,8 @@ namespace app
             opwords opCreator = new opwords();
             String[] opArr = opCreator.createOpArr();
 
+            List<String> fixup = new List<String>();
+
 
 
             /*****IMPORTANT****
@@ -287,6 +435,19 @@ namespace app
                 rowsize++;
             }
             symArr.ToArray();
+
+            while (!dr.EndOfStream)
+            {
+                String nextline = dr.ReadLine();
+                dOpArr.Add(nextline);
+                rowsize++;
+            }
+            dOpArr.ToArray();
+
+            // foreach (var item in dOpArr)
+            // {
+            //     Console.WriteLine(item);
+            // }
 
             //double checking everything was written correctly to list<string[]>
             // foreach (var array in symArr)
@@ -355,8 +516,29 @@ namespace app
                             if (precSign == ">")
                             {
                                 Console.WriteLine("Implementing pop logic...");
-                                // FUNCTION to pop stack and do stuff. replace earliest *possible* index with a temp (in most cases)
-                                prevTerm = popstack(pushdown, prevTerm); //update prevTerm during this step
+                                if (dOpArr.Contains(prevTerm))
+                                {
+                                    // Console.WriteLine("Special code needed for relational operator!");
+                                    // Console.WriteLine(">>> SHUTTING DOWN...");
+
+                                    // // Console app
+                                    // System.Environment.Exit(1);
+
+                                    prevTerm = relopPop(pushdown, prevTerm);
+                                    Console.WriteLine("~~~ FIXUP PRINT ~~~");
+                                    fixup.Add("L" + (lCounter - 1));
+                                    foreach (var item in fixup)
+                                    {
+                                        Console.WriteLine(item);
+                                    }
+
+                                }
+                                else
+                                {
+                                    // FUNCTION to pop stack and do stuff. replace earliest *possible* index with a temp (in most cases)
+                                    prevTerm = popstack(pushdown, prevTerm); //update prevTerm during this step
+                                }
+
                                 if (tokenArr[i] != ";")
                                 {
                                     i = i - 1;

@@ -416,7 +416,7 @@ namespace app
 
         static void Main(String[] args)
         {
-            String filePath = @"F:\Documents\SHSU\SHSU Spring 2023\Compiler Design\compiler_files\app\PGM3.txt";
+            String filePath = @"F:\Documents\SHSU\SHSU Spring 2023\Compiler Design\compiler_files\app\PGM4.txt";
 
             String[] tokenArr = tokenList(filePath);
 
