@@ -161,90 +161,90 @@ namespace app
                         {
                             if (int.TryParse(popped[0], out _))
                             {
-                                tw.WriteLine("mov ax, " + popped[0]);
+                                tw.WriteLine("\tmov ax, " + popped[0]);
                             }
                             else
                             {
-                                tw.WriteLine("mov ax, [" + popped[0] + "]");
+                                tw.WriteLine("\tmov ax, [" + popped[0] + "]");
                             }
                             if (int.TryParse(popped[2], out _))
                             {
-                                tw.WriteLine("add ax, " + popped[2]);
+                                tw.WriteLine("\tadd ax, " + popped[2]);
                             }
                             else
                             {
-                                tw.WriteLine("add ax, [" + popped[2] + "]");
+                                tw.WriteLine("\tadd ax, [" + popped[2] + "]");
                             }
 
-                            tw.WriteLine("move [T" + tCounter + "], ax\n");
+                            tw.WriteLine("\tmove [T" + tCounter + "], ax\n");
                             break;
                         }
                     case "-":
                         {
                             if (int.TryParse(popped[0], out _))
                             {
-                                tw.WriteLine("mov ax, " + popped[0]);
+                                tw.WriteLine("\tmov ax, " + popped[0]);
                             }
                             else
                             {
-                                tw.WriteLine("mov ax, [" + popped[0] + "]");
+                                tw.WriteLine("\tmov ax, [" + popped[0] + "]");
                             }
                             if (int.TryParse(popped[2], out _))
                             {
-                                tw.WriteLine("sub ax, " + popped[2]);
+                                tw.WriteLine("\tsub ax, " + popped[2]);
                             }
                             else
                             {
-                                tw.WriteLine("sub ax, [" + popped[2] + "]");
+                                tw.WriteLine("\tsub ax, [" + popped[2] + "]");
                             }
 
-                            tw.WriteLine("move [T" + tCounter + "], ax\n");
+                            tw.WriteLine("\tmove [T" + tCounter + "], ax\n");
                             break;
                         }
                     case "*":
                         {
                             if (int.TryParse(popped[0], out _))
                             {
-                                tw.WriteLine("mov ax, " + popped[0]);
+                                tw.WriteLine("\tmov ax, " + popped[0]);
                             }
                             else
                             {
-                                tw.WriteLine("mov ax, [" + popped[0] + "]");
+                                tw.WriteLine("\tmov ax, [" + popped[0] + "]");
                             }
                             if (int.TryParse(popped[2], out _))
                             {
-                                tw.WriteLine("mul ax, " + popped[2]);
+                                tw.WriteLine("\tmul ax, " + popped[2]);
                             }
                             else
                             {
-                                tw.WriteLine("mul ax, [" + popped[2] + "]");
+                                tw.WriteLine("\tmul ax, [" + popped[2] + "]");
                             }
 
-                            tw.WriteLine("move [T" + tCounter + "], ax\n");
+                            tw.WriteLine("\tmov [T" + tCounter + "], ax\n");
                             break;
                         }
                     case "/":
                         {
-                            tw.WriteLine("mov dx, 0");
+                            tw.WriteLine("\tmov dx, 0");
                             if (int.TryParse(popped[0], out _))
                             {
-                                tw.WriteLine("mov ax, " + popped[0]);
+                                tw.WriteLine("\tmov ax, " + popped[0]);
                             }
                             else
                             {
-                                tw.WriteLine("mov ax, [" + popped[0] + "]");
+                                tw.WriteLine("\tmov ax, [" + popped[0] + "]");
                             }
                             if (int.TryParse(popped[2], out _))
                             {
-                                tw.WriteLine("mov bx, " + popped[2]);
+                                tw.WriteLine("\tmov bx, " + popped[2]);
                             }
                             else
                             {
-                                tw.WriteLine("mov bx, [" + popped[2] + "]");
+                                tw.WriteLine("\tmov bx, [" + popped[2] + "]");
                             }
-                            tw.WriteLine("div bx");
+                            tw.WriteLine("\tdiv bx");
 
-                            tw.WriteLine("move [T" + tCounter + "], ax\n");
+                            tw.WriteLine("\tmov [T" + tCounter + "], ax\n");
                             break;
                         }
                     case "=":
@@ -252,14 +252,14 @@ namespace app
 
                             if (int.TryParse(popped[2], out _))
                             {
-                                tw.WriteLine("mov ax, " + popped[2]);
+                                tw.WriteLine("\tmov ax, " + popped[2]);
                             }
                             else
                             {
-                                tw.WriteLine("mov ax, [" + popped[2] + "]");
+                                tw.WriteLine("\tmov ax, [" + popped[2] + "]");
                             }
 
-                            tw.WriteLine("move [" + popped[0] + "], ax\n");
+                            tw.WriteLine("\tmov [" + popped[0] + "], ax\n");
                             break;
                         }
 
@@ -267,22 +267,22 @@ namespace app
                         {
                             if (int.TryParse(popped[0], out _))
                             {
-                                tw.WriteLine("mov ax, " + popped[0]);
+                                tw.WriteLine("\tmov ax, " + popped[0]);
                             }
                             else
                             {
-                                tw.WriteLine("mov ax, [" + popped[0] + "]");
+                                tw.WriteLine("\tmov ax, [" + popped[0] + "]");
                             }
                             if (int.TryParse(popped[2], out _))
                             {
-                                tw.WriteLine("cmp ax, " + popped[2]);
+                                tw.WriteLine("\tcmp ax, " + popped[2]);
                             }
                             else
                             {
-                                tw.WriteLine("cmp ax, [" + popped[2] + "]");
+                                tw.WriteLine("\tcmp ax, [" + popped[2] + "]");
                             }
 
-                            tw.WriteLine("JNE L" + lCounter + '\n');
+                            tw.WriteLine("\tJNE L" + lCounter + '\n');
                             lCounter++;
                             break;
                         }
@@ -291,22 +291,22 @@ namespace app
                         {
                             if (int.TryParse(popped[0], out _))
                             {
-                                tw.WriteLine("mov ax, " + popped[0]);
+                                tw.WriteLine("\tmov ax, " + popped[0]);
                             }
                             else
                             {
-                                tw.WriteLine("mov ax, [" + popped[0] + "]");
+                                tw.WriteLine("\tmov ax, [" + popped[0] + "]");
                             }
                             if (int.TryParse(popped[2], out _))
                             {
-                                tw.WriteLine("cmp ax, " + popped[2]);
+                                tw.WriteLine("\tcmp ax, " + popped[2]);
                             }
                             else
                             {
-                                tw.WriteLine("cmp ax, [" + popped[2] + "]");
+                                tw.WriteLine("\tcmp ax, [" + popped[2] + "]");
                             }
 
-                            tw.WriteLine("JE L" + lCounter + '\n');
+                            tw.WriteLine("\tJE L" + lCounter + '\n');
                             lCounter++;
                             break;
                         }
@@ -314,22 +314,22 @@ namespace app
                         {
                             if (int.TryParse(popped[0], out _))
                             {
-                                tw.WriteLine("mov ax, " + popped[0]);
+                                tw.WriteLine("\tmov ax, " + popped[0]);
                             }
                             else
                             {
-                                tw.WriteLine("mov ax, [" + popped[0] + "]");
+                                tw.WriteLine("\tmov ax, [" + popped[0] + "]");
                             }
                             if (int.TryParse(popped[2], out _))
                             {
-                                tw.WriteLine("cmp ax, " + popped[2]);
+                                tw.WriteLine("\tcmp ax, " + popped[2]);
                             }
                             else
                             {
-                                tw.WriteLine("cmp ax, [" + popped[2] + "]");
+                                tw.WriteLine("\tcmp ax, [" + popped[2] + "]");
                             }
 
-                            tw.WriteLine("JL L" + lCounter + '\n');
+                            tw.WriteLine("\tJL L" + lCounter + '\n');
                             lCounter++;
                             break;
                         }
@@ -337,22 +337,22 @@ namespace app
                         {
                             if (int.TryParse(popped[0], out _))
                             {
-                                tw.WriteLine("mov ax, " + popped[0]);
+                                tw.WriteLine("\tmov ax, " + popped[0]);
                             }
                             else
                             {
-                                tw.WriteLine("mov ax, [" + popped[0] + "]");
+                                tw.WriteLine("\tmov ax, [" + popped[0] + "]");
                             }
                             if (int.TryParse(popped[2], out _))
                             {
-                                tw.WriteLine("cmp ax, " + popped[2]);
+                                tw.WriteLine("\tcmp ax, " + popped[2]);
                             }
                             else
                             {
-                                tw.WriteLine("cmp ax, [" + popped[2] + "]");
+                                tw.WriteLine("\tcmp ax, [" + popped[2] + "]");
                             }
 
-                            tw.WriteLine("JLE L" + lCounter + '\n');
+                            tw.WriteLine("\tJLE L" + lCounter + '\n');
                             lCounter++;
                             break;
                         }
@@ -382,6 +382,40 @@ namespace app
             }
         }
 
+        public void boiler_plate(List<String[]> symArr)
+        {
+            TextWriter tw = File.AppendText(@"F:\Documents\SHSU\SHSU Spring 2023\Compiler Design\compiler_files\app\ML.txt");
+            String pgmName = "";
+            tw.WriteLine("sys_exit	equ	1");
+            tw.WriteLine("sys_read	equ	3");
+            tw.WriteLine("sys_write	equ	4");
+            tw.WriteLine("stdin		equ	0");
+            tw.WriteLine("stdout		equ	1");
+            tw.WriteLine("stderr		equ	3\n");
+
+            tw.WriteLine("section .data\t\t;used to declare constants");
+            foreach (var array in symArr)
+            {
+                if (array[1] == "<$PGMNAME>")
+                {
+                    pgmName = array[0];
+                }
+                else
+                {
+                    tw.WriteLine('\t' + array[0] + "\t db\t" + array[2]);
+                }
+
+            }
+            tw.WriteLine("\nsection .bss");
+            tw.WriteLine("\tglobal " + pgmName + "\t\t;main program");
+            tw.WriteLine("section .text\n");
+            tw.WriteLine(pgmName + ":");
+
+
+            tw.Close();
+            Console.WriteLine("TBI");
+        }
+
         public void createPushdown(String[] tokenArr)
         {
             /*
@@ -399,6 +433,8 @@ namespace app
             String DoubOp = @"F:\Documents\SHSU\SHSU Spring 2023\Compiler Design\compiler_files\app\double_char_delims.txt";
             StreamReader dr = new StreamReader(DoubOp);
             var dOpArr = new List<String>();
+
+
 
             Boolean inClass = false;
             int rowsize = 0;
@@ -436,6 +472,9 @@ namespace app
             }
             symArr.ToArray();
 
+            //Calling a function to create what I believe to be correct """boiler plate" for the assembly code being produced.
+            boiler_plate(symArr);
+            rowsize = 0;
             while (!dr.EndOfStream)
             {
                 String nextline = dr.ReadLine();
@@ -463,6 +502,8 @@ namespace app
 
             for (int i = 0; i < tokenArr.GetLength(0); i++)
             {
+                Console.WriteLine("array length is: " + tokenArr.GetLength(0));
+                Console.WriteLine("i is: " + i);
                 if (inClass == false)
                 {
                     if (tokenArr[i] is "{")
@@ -551,20 +592,41 @@ namespace app
                             {
                                 Console.WriteLine("Special logic needed for two token pop");
                                 //pushdown.RemoveAt(pushdown.Count - 1);
-                                equalPop(pushdown, prevTerm);
-                                Console.WriteLine("new pusdhdown after equal pop: ");
-                                foreach (var item in pushdown)
+                                if (tokenArr[i] == "THEN")
                                 {
-                                    Console.WriteLine(item);
+                                    prevTerm = tokenArr[i];
+                                    pushdown.Add(tokenArr[i]);
+
                                 }
-                                for (int j = pushdown.Count - 1; j > 0; j--)
+                                else if (tokenArr[i] is "}" && fixup.Any())
                                 {
-                                    if (opArr.Contains(pushdown[j]))
+                                    equalPop(pushdown, prevTerm);
+                                    TextWriter tw = File.AppendText(@"F:\Documents\SHSU\SHSU Spring 2023\Compiler Design\compiler_files\app\ML.txt");
+                                    tw.WriteLine(fixup.Last() + ":\tnop");
+                                    tw.Close();
+
+                                    fixup.RemoveAt(fixup.Count - 1);
+                                    pushdown.RemoveAt(pushdown.Count - 1);
+                                    pushdown.RemoveAt(pushdown.Count - 1);
+                                }
+                                else
+                                {
+                                    equalPop(pushdown, prevTerm);
+                                    Console.WriteLine("new pusdhdown after equal pop: ");
+                                    foreach (var item in pushdown)
                                     {
-                                        prevTerm = pushdown[j];
-                                        break;
+                                        Console.WriteLine(item);
+                                    }
+                                    for (int j = pushdown.Count - 1; j > 0; j--)
+                                    {
+                                        if (opArr.Contains(pushdown[j]))
+                                        {
+                                            prevTerm = pushdown[j];
+                                            break;
+                                        }
                                     }
                                 }
+
 
 
 

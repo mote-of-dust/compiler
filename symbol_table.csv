@@ -1,15 +1,10 @@
 PGM4,<$PGMNAME>,,0,CS
 X,<var>,?,0,DS
 5,<$litInt>,5,2,DS
-Y,<var>,?,4,DS
-3,<$litInt>,3,6,DS
+Y,<var>,4,4,DS
+6,<$litInt>,6,6,DS
 T1,<var>,?,8,DS
 T2,<var>,?,10,DS
 T3,<var>,?,12,DS
 T4,<var>,?,14,DS
 T5,<var>,?,16,DS
-T6,<var>,?,18,DS
-T7,<var>,?,20,DS
-T8,<var>,?,22,DS
-T9,<var>,?,24,DS
-T10,<var>,?,26,DS
