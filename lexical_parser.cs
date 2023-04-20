@@ -416,7 +416,7 @@ namespace app
 
         static void Main(String[] args)
         {
-            String filePath = @"F:\Documents\SHSU\SHSU Spring 2023\Compiler Design\compiler_files\app\PGM4.txt";
+            String filePath = @"F:\Documents\SHSU\SHSU Spring 2023\Compiler Design\compiler_files\app\PGM5.txt";
 
             String[] tokenArr = tokenList(filePath);
 
@@ -435,7 +435,7 @@ namespace app
 
             Console.WriteLine("~~~~~Lexical portion finished~~~~~");
 
-            var MLcreator = File.Create(@"F:\Documents\SHSU\SHSU Spring 2023\Compiler Design\compiler_files\app\ML.txt");
+            var MLcreator = File.Create(@"F:\Documents\SHSU\SHSU Spring 2023\Compiler Design\compiler_files\app\ML.asm");
             MLcreator.Close();
 
             syntaxAnalyzer pushdown = new syntaxAnalyzer();

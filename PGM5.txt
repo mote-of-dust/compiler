@@ -1,0 +1,5 @@
+CLASS PGM5{
+
+    VAR X = INPUT;
+    PRINT X;
+}

@@ -148,10 +148,110 @@ namespace app
 
         }
 
+        public string printPop(List<string> pushdown, string prevTerm)
+        {
+            Console.WriteLine("Pre-pop: ");
+            foreach (var item in pushdown)
+            {
+                Console.WriteLine(item);
+            }
+            int opIndx = 0;
+            List<string> popped = new List<string>();
+            for (int i = (pushdown.Count() - 1); i >= 0; i--)
+            {
+                if (prevTerm == pushdown[i])
+                {
+                    opIndx = i;
+                    break;
+                }
+            }
+            Console.WriteLine("prevTerm: " + prevTerm + " found at index " + opIndx);
+
+            popped.Add(pushdown[opIndx]);
+            popped.Add(pushdown[opIndx + 1]);
+            pushdown.RemoveAt(opIndx + 1);
+            pushdown.RemoveAt(opIndx);
+
+            Console.WriteLine("PSA after pop: ");
+            //Console.WriteLine("~~~~~~~~ PREVTERM: " + prevTerm);
+            if (prevTerm != "=")
+            {
+                tCounter++;
+                //FUNCTION TO CALL SWITCHCASE AND MAKE ML CODE
+                mlWriter(popped);
+                foreach (var item in pushdown)
+                {
+                    Console.WriteLine(item);
+                }
+                return pushdown[(pushdown.Count) - 1];
+            }
+            else
+            {
+                //FUNCTION TO CALL SWITCHCASE AND MAKE ML CODE
+                mlWriter(popped);
+                foreach (var item in pushdown)
+                {
+                    Console.WriteLine(item);
+                }
+                return pushdown.Last();
+            }
+        }
+        public string inputPop(List<string> pushdown, string prevTerm)
+        {
+            string tempo = "T";
+            Console.WriteLine("Pre-pop: ");
+            foreach (var item in pushdown)
+            {
+                Console.WriteLine(item);
+            }
+            int opIndx = 0;
+            List<string> popped = new List<string>();
+            for (int i = (pushdown.Count() - 1); i >= 0; i--)
+            {
+                if (prevTerm == pushdown[i])
+                {
+                    opIndx = i;
+                    break;
+                }
+            }
+            Console.WriteLine("prevTerm: " + prevTerm + " found at index " + opIndx);
+
+            popped.Add(pushdown[opIndx]);
+
+            pushdown.RemoveAt(opIndx);
+
+
+
+            Console.WriteLine("PSA after pop: ");
+            //Console.WriteLine("~~~~~~~~ PREVTERM: " + prevTerm);
+            if (prevTerm != "=")
+            {
+                tCounter++;
+                //FUNCTION TO CALL SWITCHCASE AND MAKE ML CODE
+                mlWriter(popped);
+                pushdown.Add(tempo + tCounter.ToString());
+                foreach (var item in pushdown)
+                {
+                    Console.WriteLine(item);
+                }
+                return pushdown[(pushdown.Count) - 2];
+            }
+            else
+            {
+                //FUNCTION TO CALL SWITCHCASE AND MAKE ML CODE
+                mlWriter(popped);
+                foreach (var item in pushdown)
+                {
+                    Console.WriteLine(item);
+                }
+                return pushdown.Last();
+            }
+        }
+
         // popstack() will call this function once the popped list<string> is created. This function will append a file to
         public void mlWriter(List<string> popped)
         {
-            TextWriter tw = File.AppendText(@"F:\Documents\SHSU\SHSU Spring 2023\Compiler Design\compiler_files\app\ML.txt");
+            TextWriter tw = File.AppendText(@"F:\Documents\SHSU\SHSU Spring 2023\Compiler Design\compiler_files\app\ML.asm");
             // create a switch case based on item at index 1 (middle index)
             if (popped.Count == 3)
             {
@@ -356,12 +456,54 @@ namespace app
                             lCounter++;
                             break;
                         }
-
-
-
                     default:
                         break;
                 }
+            }
+            else if (popped.Count == 2)
+            {
+                switch (popped[0])
+                {
+                    case "PRINT":
+                        {
+                            tw.WriteLine("\tmov ax,[" + popped[1] + "]		;integer to print in ax");
+                            tw.WriteLine("\tcall    ConvertIntegerToString  ;Convert binary integer to a char string");
+                            tw.WriteLine("\tmov ax,[" + popped[1] + "]		;integer to print in ax");
+                            tw.WriteLine("\tmov eax, 4	;write");
+                            tw.WriteLine("\tmov ebx, 1	;print default sys_out");
+                            tw.WriteLine("\tmov ecx, Result	;start address for print");
+                            tw.WriteLine("\tmov edx, ResultEnd");
+                            tw.WriteLine("\tint 80h\n");
+                            // tw.WriteLine("\tmov edx,eax	; edx has num characters read including <lf> ****");
+                            // tw.WriteLine("\tmov eax, 4	;write");
+                            // tw.WriteLine("\tmov ebx, 1	;print default sys_out");
+                            // tw.WriteLine("\tmov ecx, [" + popped[1] + "]     ;start address for print");
+                            // tw.WriteLine("\tint 80h\n");
+                            break;
+                        }
+                }
+
+            }
+            else if (popped.Count == 1)
+            {
+                switch (popped[0])
+                {
+                    case "INPUT":
+                        {
+                            tw.WriteLine("\tmov eax, sys_write");
+                            tw.WriteLine("\tmov ebx, stdout");
+                            tw.WriteLine("\tmov ecx, userMsg");
+                            tw.WriteLine("\tmov edx, lenUserMsg");
+                            tw.WriteLine("\tint	80h\n");
+                            tw.WriteLine("\tmov	eax, sys_read");
+                            tw.WriteLine("\tmov	ebx, stdin");
+                            tw.WriteLine("\tmov 	ecx, [T" + tCounter + "]");
+                            tw.WriteLine("\tmov 	edx, 6");
+                            tw.WriteLine("\tint	0x80\n");
+                            break;
+                        }
+                }
+
             }
             else
             {
@@ -384,7 +526,7 @@ namespace app
 
         public void boiler_plate(List<String[]> symArr)
         {
-            TextWriter tw = File.AppendText(@"F:\Documents\SHSU\SHSU Spring 2023\Compiler Design\compiler_files\app\ML.txt");
+            TextWriter tw = File.AppendText(@"F:\Documents\SHSU\SHSU Spring 2023\Compiler Design\compiler_files\app\ML.asm");
             String pgmName = "";
             tw.WriteLine("sys_exit	equ	1");
             tw.WriteLine("sys_read	equ	3");
@@ -406,19 +548,61 @@ namespace app
                 }
 
             }
+            tw.WriteLine("\tuserMsg		db      'Enter an integer(less than 32,765): '");
+            tw.WriteLine("\tlenUserMsg	equ	$-userMsg");
+            tw.WriteLine("\tnewline		db	0xA 	; 0xA 0xD is ASCII <LF><CR>");
+
+            tw.WriteLine("\tTen             DW      10  ;Used in converting to base ten.");
+            tw.WriteLine("\tnum		times 6 db 'ABCDEF'");
+            tw.WriteLine("\tnumEnd		equ	$-num");
+            tw.WriteLine("\tResult          db      'Ans = '");
+            tw.WriteLine("\tResultValue	db	'aaaaa'");
+            tw.WriteLine("\t		db	0xA");
+            tw.WriteLine("\tResultEnd       equ 	$-Result    ; $=> here, subtract address Result");
             tw.WriteLine("\nsection .bss		;used to declare uninitialized variables\n");
             tw.WriteLine("\tTempChar        RESB    1              ;temp space for use by GetNextChar");
             tw.WriteLine("\ttestchar        RESB    1");
             tw.WriteLine("\tReadInt         RESW    1              ;Temporary storage GetAnInteger.	");
             tw.WriteLine("\ttempint         RESW	1              ;Used in converting to base ten.");
+
             tw.WriteLine("\tnegflag         RESB    1              ;P=positive, N=negative\n");
-            tw.WriteLine("\tglobal " + pgmName + "\t\t;main program");
+
+
+            tw.WriteLine("\tglobal _start:\t\t;main program");
             tw.WriteLine("section .text\n");
-            tw.WriteLine(pgmName + ":");
+            tw.WriteLine("_start:");
 
 
             tw.Close();
             Console.WriteLine("TBI");
+        }
+
+        public void endBoiler(Boolean inputBoiler, Boolean printBoiler)
+        {
+            TextWriter tw = File.AppendText(@"F:\Documents\SHSU\SHSU Spring 2023\Compiler Design\compiler_files\app\ML.asm");
+
+            tw.WriteLine("\nfini:");
+            tw.WriteLine("\tmov eax,sys_exit ;terminate, sys_exit = 1");
+            tw.WriteLine("\txor ebx,ebx	;successfully, zero in ebx indicates success");
+            tw.WriteLine("\tint 80h\n\n");
+
+
+            tw.WriteLine("ConvertIntegerToString:");
+            tw.WriteLine("\tmov ebx, ResultValue + 4   ;Store the integer as a five");
+            tw.WriteLine("ConvertLoop:");
+            tw.WriteLine("\tsub dx,dx  ; repeatedly divide dx:ax by 10 to obtain last digit of number");
+            tw.WriteLine("\tmov cx,10  ; as the remainder in the DX register.  Quotient in AX.");
+            tw.WriteLine("\tdiv cx");
+            tw.WriteLine("\tadd dl,'0' ; Add '0' to dl to convert from binary to character.");
+            tw.WriteLine("\tmov [ebx], dl");
+            tw.WriteLine("\tdec ebx");
+            tw.WriteLine("\tcmp ebx,ResultValue");
+            tw.WriteLine("\tjge ConvertLoop\n");
+            tw.WriteLine("\tret");
+
+
+
+            tw.Close();
         }
 
         public void createPushdown(String[] tokenArr)
@@ -438,6 +622,9 @@ namespace app
             String DoubOp = @"F:\Documents\SHSU\SHSU Spring 2023\Compiler Design\compiler_files\app\double_char_delims.txt";
             StreamReader dr = new StreamReader(DoubOp);
             var dOpArr = new List<String>();
+
+            Boolean inputBoiler = false;
+            Boolean printBoiler = false;
 
 
 
@@ -562,7 +749,7 @@ namespace app
                             if (precSign == ">")
                             {
                                 Console.WriteLine("Implementing pop logic...");
-                                if (dOpArr.Contains(prevTerm))
+                                if (dOpArr.Contains(prevTerm) && prevTerm != "INPUT")
                                 {
                                     // Console.WriteLine("Special code needed for relational operator!");
                                     // Console.WriteLine(">>> SHUTTING DOWN...");
@@ -579,13 +766,23 @@ namespace app
                                     }
 
                                 }
+                                else if (prevTerm == "INPUT")
+                                {
+                                    prevTerm = inputPop(pushdown, prevTerm);
+                                    // Console.WriteLine(">>> SPECIAL CODE TO BE IMPLEMENTED");
+                                    // System.Environment.Exit(1);
+                                }
+                                else if (prevTerm == "PRINT")
+                                {
+                                    prevTerm = printPop(pushdown, prevTerm);
+                                }
                                 else
                                 {
                                     // FUNCTION to pop stack and do stuff. replace earliest *possible* index with a temp (in most cases)
                                     prevTerm = popstack(pushdown, prevTerm); //update prevTerm during this step
                                 }
 
-                                if (tokenArr[i] != ";")
+                                if (1 == 1)
                                 {
                                     i = i - 1;
                                     Console.WriteLine("retesting item...");
@@ -606,7 +803,7 @@ namespace app
                                 else if (tokenArr[i] is "}" && fixup.Any())
                                 {
                                     equalPop(pushdown, prevTerm);
-                                    TextWriter tw = File.AppendText(@"F:\Documents\SHSU\SHSU Spring 2023\Compiler Design\compiler_files\app\ML.txt");
+                                    TextWriter tw = File.AppendText(@"F:\Documents\SHSU\SHSU Spring 2023\Compiler Design\compiler_files\app\ML.asm");
                                     tw.WriteLine(fixup.Last() + ":\tnop");
                                     tw.Close();
 
@@ -632,17 +829,10 @@ namespace app
                                     }
                                 }
 
-
-
-
                             }
                             else if (precSign == "@")
                             {
-                                Console.WriteLine("special code to be implemented for this pop.");
-                                // special case logic/pop for a declaration.
-                                pushdown.Add(tokenArr[i]);
-                                //update prevTerm at the end to continue the cycle of easily recalling previous terminal.
-                                prevTerm = tokenArr[i];
+                                Console.WriteLine("Throwing away empty semicolon...");
                             }
                             else
                             {
@@ -651,17 +841,13 @@ namespace app
                                 //update prevTerm at the end to continue the cycle of easily recalling previous terminal.
                                 prevTerm = tokenArr[i];
                             }
-
-
-
-
                         }
-
                     }
                     //Console.WriteLine("Pushing " + tokenArr[i] + " into the stack!");
                 }
             }
             Console.WriteLine("Possible end??");
+            endBoiler(inputBoiler, printBoiler);
             foreach (var item in pushdown)
             {
                 Console.WriteLine(item);

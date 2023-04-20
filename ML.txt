@@ -51,3 +51,56 @@ L1:	nop
 	mov ax, [T1]
 	mov [X], ax
 
+sys_exit	equ	1
+sys_read	equ	3
+sys_write	equ	4
+stdin		equ	0
+stdout		equ	1
+stderr		equ	3
+
+section .data		;used to declare constants
+	X	 db	?
+	5	 db	5
+	Y	 db	?
+	6	 db	6
+	T1	 db	?
+	T2	 db	?
+	T3	 db	?
+	T4	 db	?
+	T5	 db	?
+
+section .bss		;used to declare uninitialized variables
+
+	TempChar        RESB    1              ;temp space for use by GetNextChar
+	testchar        RESB    1
+	ReadInt         RESW    1              ;Temporary storage GetAnInteger.	
+	tempint         RESW	1              ;Used in converting to base ten.
+	negflag         RESB    1              ;P=positive, N=negative
+
+	global PGM4		;main program
+section .text
+
+PGM4:
+	mov ax, [X]
+	cmp ax, 5
+	JNE L1
+
+	mov ax, [Y]
+	cmp ax, 6
+	JNE L2
+
+	mov ax, 3
+	mov [X], ax
+
+L2:	nop
+	mov ax, 4
+	mov [Y], ax
+
+L1:	nop
+	mov ax, 7
+	add ax, [Y]
+	move [T1], ax
+
+	mov ax, [T1]
+	mov [X], ax
+

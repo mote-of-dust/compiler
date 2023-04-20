@@ -1,5 +1,5 @@
-CONST|IF|VAR|THEN|PROCEDURE|WHILE|CALL|DO|ODD|CLASS|=|,|;|+|-|*|/|(|)|<|>|{|}|==|>=|<=|!=|/*|*/
-<$CONST>|<$IF>|<$VAR>|<$THEN>|<$PROCEDURE>|<$WHILE>|<$CALL>|<$DO>|<$ODD>|<$CLASS>|<assignment>|<comma>|<semi>|<addop>|<addop>|<mop>|<mop>|<lp>|<rp>|<relop>|<relop>|<lb>|<rb>|<relop>|<relop>|<relop>|<relop>|<lcmt>|<rcmt>
+CONST|IF|VAR|THEN|PROCEDURE|WHILE|CALL|DO|ODD|CLASS|=|,|;|+|-|*|/|(|)|<|>|{|}|==|>=|<=|!=|/*|*/|INPUT|PRINT
+<$CONST>|<$IF>|<$VAR>|<$THEN>|<$PROCEDURE>|<$WHILE>|<$CALL>|<$DO>|<$ODD>|<$CLASS>|<assignment>|<comma>|<semi>|<addop>|<addop>|<mop>|<mop>|<lp>|<rp>|<relop>|<relop>|<lb>|<rb>|<relop>|<relop>|<relop>|<relop>|<lcmt>|<rcmt>|<INPUT>|<PRINT>
 ||||||||||||||||||||||||||||
 ||||||||||||||||||||||||||||
 ||||||||||||||||||||||||||||
