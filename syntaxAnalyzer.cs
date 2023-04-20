@@ -176,7 +176,7 @@ namespace app
             //Console.WriteLine("~~~~~~~~ PREVTERM: " + prevTerm);
             if (prevTerm != "=")
             {
-                tCounter++;
+                //tCounter++;
                 //FUNCTION TO CALL SWITCHCASE AND MAKE ML CODE
                 mlWriter(popped);
                 foreach (var item in pushdown)
@@ -277,6 +277,7 @@ namespace app
                             }
 
                             tw.WriteLine("\tmov [T" + tCounter + "], ax\n");
+                            tw.WriteLine("\tmov ax, 0\n");
                             break;
                         }
                     case "-":
@@ -298,7 +299,7 @@ namespace app
                                 tw.WriteLine("\tsub ax, [" + popped[2] + "]");
                             }
 
-                            tw.WriteLine("\tmove [T" + tCounter + "], ax\n");
+                            tw.WriteLine("\tmov [T" + tCounter + "], ax\n");
                             break;
                         }
                     case "*":
@@ -360,6 +361,7 @@ namespace app
                             }
 
                             tw.WriteLine("\tmov [" + popped[0] + "], ax\n");
+                            tw.WriteLine("\tmov ax, 0\n");
                             break;
                         }
 
@@ -539,7 +541,7 @@ namespace app
                 }
                 else
                 {
-                    tw.WriteLine('\t' + array[0] + "\t db\t" + array[2]);
+                    tw.WriteLine('\t' + array[0] + "\t db\t" + "'aaaaa'");
                 }
 
             }

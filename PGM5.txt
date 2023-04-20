@@ -1,7 +1,17 @@
 CLASS PGM5{
 
     VAR X = INPUT;
-    X = X + 5;
-
     PRINT X;
+    VAR Y = INPUT;
+
+    PRINT Y;
+
+    IF ( X > Y ) THEN{
+        X = X + 50;
+        IF ( X > 11 ) THEN{
+            X = X + 20;
+        }
+    }
+    PRINT X;
+
 }

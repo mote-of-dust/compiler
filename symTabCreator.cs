@@ -92,7 +92,7 @@ namespace app
             }
             string tempo = "T";
             // lastly, adding 5 temporary variables
-            for (int i = 1; i < 6; i++)
+            for (int i = 1; i < 11; i++)
             {
                 file.WriteLineAsync((tempo + i.ToString()) + "," + "<var>" + "," + "?" + "," + dsAddr + "," + "DS");
                 dsAddr += 2;

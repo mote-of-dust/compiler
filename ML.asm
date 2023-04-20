@@ -6,12 +6,18 @@ stdout		equ	1
 stderr		equ	3
 
 section .data		;used to declare constants
-	X	 db	?
-	T1	 db	?
-	T2	 db	?
-	T3	 db	?
-	T4	 db	?
-	T5	 db	?
+	X	 db	'aaaaa'
+	Y	 db	'aaaaa'
+	T1	 db	'aaaaa'
+	T2	 db	'aaaaa'
+	T3	 db	'aaaaa'
+	T4	 db	'aaaaa'
+	T5	 db	'aaaaa'
+	T6	 db	'aaaaa'
+	T7	 db	'aaaaa'
+	T8	 db	'aaaaa'
+	T9	 db	'aaaaa'
+	T10	 db	'aaaaa'
 	userMsg		db      'Enter an integer(less than 32,765): '
 	lenUserMsg	equ	$-userMsg
 	newline		db	0xA 	; 0xA 0xD is ASCII <LF><CR>
@@ -43,13 +49,68 @@ _start:
 	mov ax, [T1]
 	mov [X], ax
 
-	mov ax, [X]
-	add ax, 5
+	mov ax, 0
+
+	mov ax,[X]		;integer to print in ax
+	call    ConvertIntegerToString  ;Convert binary integer to a char string
+	mov ax,[X]		;integer to print in ax
+	mov eax, 4	;write
+	mov ebx, 1	;print default sys_out
+	mov ecx, Result	;start address for print
+	mov edx, ResultEnd
+	int 80h
+
+	call    PrintString
+	call    GetAnInteger
+	mov ax, [ReadInt]
 	mov [T2], ax
 
 	mov ax, [T2]
+	mov [Y], ax
+
+	mov ax, 0
+
+	mov ax,[Y]		;integer to print in ax
+	call    ConvertIntegerToString  ;Convert binary integer to a char string
+	mov ax,[Y]		;integer to print in ax
+	mov eax, 4	;write
+	mov ebx, 1	;print default sys_out
+	mov ecx, Result	;start address for print
+	mov edx, ResultEnd
+	int 80h
+
+	mov ax, [X]
+	cmp ax, [Y]
+	JLE L1
+
+	mov ax, [X]
+	add ax, 50
+	mov [T3], ax
+
+	mov ax, 0
+
+	mov ax, [T3]
 	mov [X], ax
 
+	mov ax, 0
+
+	mov ax, [X]
+	cmp ax, 11
+	JLE L2
+
+	mov ax, [X]
+	add ax, 20
+	mov [T4], ax
+
+	mov ax, 0
+
+	mov ax, [T4]
+	mov [X], ax
+
+	mov ax, 0
+
+L2:	nop
+L1:	nop
 	mov ax,[X]		;integer to print in ax
 	call    ConvertIntegerToString  ;Convert binary integer to a char string
 	mov ax,[X]		;integer to print in ax
