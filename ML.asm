@@ -35,17 +35,10 @@ section .bss		;used to declare uninitialized variables
 section .text
 
 _start:
-	mov eax, sys_write
-	mov ebx, stdout
-	mov ecx, userMsg
-	mov edx, lenUserMsg
-	int	80h
-
-	mov	eax, sys_read
-	mov	ebx, stdin
-	mov 	ecx, [T1]
-	mov 	edx, 6
-	int	0x80
+	call    PrintString
+	call    GetAnInteger
+	mov ax, [ReadInt]
+	mov [T1], ax
 
 	mov ax, [T1]
 	mov [X], ax
@@ -64,6 +57,45 @@ fini:
 	mov eax,sys_exit ;terminate, sys_exit = 1
 	xor ebx,ebx	;successfully, zero in ebx indicates success
 	int 80h
+
+
+PrintString:
+	push    ax
+	push    dx
+	mov eax, 4
+	mov ebx, 1		; print default output device
+	mov ecx, userMsg	; pointer to string
+	mov edx, lenUserMsg	; arg1, where to write, screen
+	int	80h		; interrupt 80 hex, call kernel
+	pop     dx              ;Restore registers.
+	pop     ax
+	ret
+
+GetAnInteger:	;Get an integer as a string
+	mov eax,3	;read
+	mov ebx,2	;device
+	mov ecx,num	;buffer address
+	mov edx,6	;max characters
+	int 0x80
+
+ConvertStringToInteger:
+	mov ax,0	;hold integer
+	mov [ReadInt],ax ;initialize 16 bit number to zero
+	mov ecx,num	;pt - 1st or next digit of number as a string 
+	mov bx,0
+	mov bl, byte [ecx] ;contains first or next digit
+Next:	sub bl,'0'	;convert character to number
+	mov ax,[ReadInt]
+	mov dx,10
+	mul dx		;eax = eax * 10
+	add ax,bx
+	mov [ReadInt], ax
+	mov bx,0
+	add ecx,1 	;pt = pt + 1
+	mov bl, byte[ecx]
+	cmp bl,0xA	;is it a <lf>
+jne Next	; get next digit
+ret
 
 
 ConvertIntegerToString:

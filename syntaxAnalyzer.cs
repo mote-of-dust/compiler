@@ -276,7 +276,7 @@ namespace app
                                 tw.WriteLine("\tadd ax, [" + popped[2] + "]");
                             }
 
-                            tw.WriteLine("\tmove [T" + tCounter + "], ax\n");
+                            tw.WriteLine("\tmov [T" + tCounter + "], ax\n");
                             break;
                         }
                     case "-":
@@ -490,16 +490,11 @@ namespace app
                 {
                     case "INPUT":
                         {
-                            tw.WriteLine("\tmov eax, sys_write");
-                            tw.WriteLine("\tmov ebx, stdout");
-                            tw.WriteLine("\tmov ecx, userMsg");
-                            tw.WriteLine("\tmov edx, lenUserMsg");
-                            tw.WriteLine("\tint	80h\n");
-                            tw.WriteLine("\tmov	eax, sys_read");
-                            tw.WriteLine("\tmov	ebx, stdin");
-                            tw.WriteLine("\tmov 	ecx, [T" + tCounter + "]");
-                            tw.WriteLine("\tmov 	edx, 6");
-                            tw.WriteLine("\tint	0x80\n");
+                            tw.WriteLine("\tcall    PrintString");
+                            tw.WriteLine("\tcall    GetAnInteger");
+                            tw.WriteLine("\tmov ax, [ReadInt]");
+                            tw.WriteLine("\tmov [T" + tCounter + "], ax");
+                            tw.WriteLine("");
                             break;
                         }
                 }
@@ -538,9 +533,9 @@ namespace app
             tw.WriteLine("section .data\t\t;used to declare constants");
             foreach (var array in symArr)
             {
-                if (array[1] == "<$PGMNAME>")
+                if (array[1] == "<$PGMNAME>" || int.TryParse(array[0], out _))
                 {
-                    pgmName = array[0];
+                    //pgmName = array[0];
                 }
                 else
                 {
@@ -585,6 +580,45 @@ namespace app
             tw.WriteLine("\tmov eax,sys_exit ;terminate, sys_exit = 1");
             tw.WriteLine("\txor ebx,ebx	;successfully, zero in ebx indicates success");
             tw.WriteLine("\tint 80h\n\n");
+
+            tw.WriteLine("PrintString:");
+            tw.WriteLine("\tpush    ax");
+            tw.WriteLine("\tpush    dx");
+            tw.WriteLine("\tmov eax, 4");
+            tw.WriteLine("\tmov ebx, 1		; print default output device");
+            tw.WriteLine("\tmov ecx, userMsg	; pointer to string");
+            tw.WriteLine("\tmov edx, lenUserMsg	; arg1, where to write, screen");
+            tw.WriteLine("\tint	80h		; interrupt 80 hex, call kernel");
+            tw.WriteLine("\tpop     dx              ;Restore registers.");
+            tw.WriteLine("\tpop     ax");
+            tw.WriteLine("\tret\n");
+
+
+            tw.WriteLine("GetAnInteger:	;Get an integer as a string");
+            tw.WriteLine("\tmov eax,3	;read");
+            tw.WriteLine("\tmov ebx,2	;device");
+            tw.WriteLine("\tmov ecx,num	;buffer address");
+            tw.WriteLine("\tmov edx,6	;max characters");
+            tw.WriteLine("\tint 0x80\n");
+            tw.WriteLine("ConvertStringToInteger:");
+            tw.WriteLine("\tmov ax,0	;hold integer");
+            tw.WriteLine("\tmov [ReadInt],ax ;initialize 16 bit number to zero");
+            tw.WriteLine("\tmov ecx,num	;pt - 1st or next digit of number as a string ");
+            tw.WriteLine("\tmov bx,0");
+            tw.WriteLine("\tmov bl, byte [ecx] ;contains first or next digit");
+            tw.WriteLine("Next:	sub bl,'0'	;convert character to number");
+            tw.WriteLine("\tmov ax,[ReadInt]");
+            tw.WriteLine("\tmov dx,10");
+            tw.WriteLine("\tmul dx		;eax = eax * 10");
+            tw.WriteLine("\tadd ax,bx");
+            tw.WriteLine("\tmov [ReadInt], ax");
+            tw.WriteLine("\tmov bx,0");
+            tw.WriteLine("\tadd ecx,1 	;pt = pt + 1");
+            tw.WriteLine("\tmov bl, byte[ecx]");
+            tw.WriteLine("\tcmp bl,0xA	;is it a <lf>");
+            tw.WriteLine("jne Next	; get next digit");
+            tw.WriteLine("ret\n\n");
+
 
 
             tw.WriteLine("ConvertIntegerToString:");
