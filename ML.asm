@@ -43,6 +43,13 @@ _start:
 	mov ax, [T1]
 	mov [X], ax
 
+	mov ax, [X]
+	add ax, 5
+	mov [T2], ax
+
+	mov ax, [T2]
+	mov [X], ax
+
 	mov ax,[X]		;integer to print in ax
 	call    ConvertIntegerToString  ;Convert binary integer to a char string
 	mov ax,[X]		;integer to print in ax

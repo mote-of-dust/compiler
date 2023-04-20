@@ -6,6 +6,12 @@ X|<var>
 =|<assignment>
 INPUT|<INPUT>
 ;|<semi>
+X|<var>
+=|<assignment>
+X|<var>
++|<addop>
+5|<$litInt>
+;|<semi>
 PRINT|<PRINT>
 X|<var>
 ;|<semi>
