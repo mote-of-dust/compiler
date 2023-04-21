@@ -1,11 +1,13 @@
 CLASS PGM4{
-    IF ( X == 5 ) THEN {
-        IF ( Y == 6 ) THEN {
-            X = 3;
+
+    VAR X = INPUT;
+    VAR Y = 5;
+
+    IF ( X >= Y ) THEN{
+        IF ( X > Y ) THEN{
+            X = X * 2;
         }
-        Y = 4;
+        X = X - 1;
+        PRINT X;
     }
-
-
-    VAR X = 7 + Y;
 }

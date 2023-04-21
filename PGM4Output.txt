@@ -1,0 +1,8 @@
+mote@debian:~/Downloads$ ./ML
+Enter an integer(less than 32,765): 5
+Ans = 00004
+
+mote@debian:~/Downloads$ ./ML
+Enter an integer(less than 32,765): 6
+Ans = 00011
+mote@debian:~/Downloads$ 

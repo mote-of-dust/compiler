@@ -277,7 +277,7 @@ namespace app
                             }
 
                             tw.WriteLine("\tmov [T" + tCounter + "], ax\n");
-                            tw.WriteLine("\tmov ax, 0\n");
+
                             break;
                         }
                     case "-":
@@ -314,11 +314,11 @@ namespace app
                             }
                             if (int.TryParse(popped[2], out _))
                             {
-                                tw.WriteLine("\tmul ax, " + popped[2]);
+                                tw.WriteLine("\timul ax, " + popped[2]);
                             }
                             else
                             {
-                                tw.WriteLine("\tmul ax, [" + popped[2] + "]");
+                                tw.WriteLine("\tmul byte [" + popped[2] + "]");
                             }
 
                             tw.WriteLine("\tmov [T" + tCounter + "], ax\n");
@@ -361,7 +361,7 @@ namespace app
                             }
 
                             tw.WriteLine("\tmov [" + popped[0] + "], ax\n");
-                            tw.WriteLine("\tmov ax, 0\n");
+
                             break;
                         }
 

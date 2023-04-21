@@ -1,5 +1,7 @@
 CLASS PGM3{
-	CONST M = 7;
+	CONST M = INPUT;
 
-	X = ( 5 * ( M + 12 ) / 3 );
+	VAR X = ( 5 * ( M + 12 ) / 3 );
+
+	PRINT X;
 }

@@ -1,7 +1,10 @@
 CLASS PGM1{
 	CONST M = 7;
-	CONST N = 85;
+	VAR N = 5;
+	VAR Z = 3;
 
 
-	X = M + Y * Z + 12;
+	VAR X = M + N * Z + 12;
+
+	PRINT X;
 }

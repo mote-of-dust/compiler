@@ -8,6 +8,7 @@ stderr		equ	3
 section .data		;used to declare constants
 	X	 db	'aaaaa'
 	Y	 db	'aaaaa'
+	Z	 db	'aaaaa'
 	T1	 db	'aaaaa'
 	T2	 db	'aaaaa'
 	T3	 db	'aaaaa'
@@ -49,31 +50,29 @@ _start:
 	mov ax, [T1]
 	mov [X], ax
 
-	mov ax, 5
-	mov [Y], ax
-
-	mov ax, [X]
-	cmp ax, [Y]
-	JL L1
-
-	mov ax, [X]
-	cmp ax, [Y]
-	JLE L2
-
-	mov ax, [X]
-	imul ax, 2
+	call    PrintString
+	call    GetAnInteger
+	mov ax, [ReadInt]
 	mov [T2], ax
 
 	mov ax, [T2]
-	mov [X], ax
+	mov [Y], ax
 
-L2:	nop
-	mov ax, [X]
-	sub ax, 1
+	call    PrintString
+	call    GetAnInteger
+	mov ax, [ReadInt]
 	mov [T3], ax
 
 	mov ax, [T3]
-	mov [X], ax
+	mov [Z], ax
+
+	mov ax, [X]
+	cmp ax, [Y]
+	JLE L1
+
+	mov ax, [X]
+	cmp ax, [Z]
+	JLE L2
 
 	mov ax,[X]		;integer to print in ax
 	call    ConvertIntegerToString  ;Convert binary integer to a char string
@@ -84,7 +83,46 @@ L2:	nop
 	mov edx, ResultEnd
 	int 80h
 
+L2:	nop
 L1:	nop
+	mov ax, [Y]
+	cmp ax, [X]
+	JLE L3
+
+	mov ax, [Y]
+	cmp ax, [Z]
+	JLE L4
+
+	mov ax,[Y]		;integer to print in ax
+	call    ConvertIntegerToString  ;Convert binary integer to a char string
+	mov ax,[Y]		;integer to print in ax
+	mov eax, 4	;write
+	mov ebx, 1	;print default sys_out
+	mov ecx, Result	;start address for print
+	mov edx, ResultEnd
+	int 80h
+
+L4:	nop
+L3:	nop
+	mov ax, [Z]
+	cmp ax, [X]
+	JLE L5
+
+	mov ax, [Z]
+	cmp ax, [Y]
+	JLE L6
+
+	mov ax,[Z]		;integer to print in ax
+	call    ConvertIntegerToString  ;Convert binary integer to a char string
+	mov ax,[Z]		;integer to print in ax
+	mov eax, 4	;write
+	mov ebx, 1	;print default sys_out
+	mov ecx, Result	;start address for print
+	mov edx, ResultEnd
+	int 80h
+
+L6:	nop
+L5:	nop
 
 fini:
 	mov eax,sys_exit ;terminate, sys_exit = 1

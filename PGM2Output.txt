@@ -1,0 +1,6 @@
+mote@debian:~/Downloads$ ./ML
+Enter an integer(less than 32,765): 5
+Enter an integer(less than 32,765): 10
+Enter an integer(less than 32,765): 15
+Ans = 00015
+mote@debian:~/Downloads$ 

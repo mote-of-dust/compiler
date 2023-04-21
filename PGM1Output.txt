@@ -1,0 +1,3 @@
+mote@debian:~/Downloads$ ./ML
+Ans = 00034
+mote@debian:~/Downloads$ 

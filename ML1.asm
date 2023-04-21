@@ -6,8 +6,10 @@ stdout		equ	1
 stderr		equ	3
 
 section .data		;used to declare constants
+	M	 db	'aaaaa'
+	N	 db	'aaaaa'
+	Z	 db	'aaaaa'
 	X	 db	'aaaaa'
-	Y	 db	'aaaaa'
 	T1	 db	'aaaaa'
 	T2	 db	'aaaaa'
 	T3	 db	'aaaaa'
@@ -41,35 +43,25 @@ section .bss		;used to declare uninitialized variables
 section .text
 
 _start:
-	call    PrintString
-	call    GetAnInteger
-	mov ax, [ReadInt]
-	mov [T1], ax
-
-	mov ax, [T1]
-	mov [X], ax
+	mov ax, 7
+	mov [M], ax
 
 	mov ax, 5
-	mov [Y], ax
+	mov [N], ax
 
-	mov ax, [X]
-	cmp ax, [Y]
-	JL L1
+	mov ax, 3
+	mov [Z], ax
 
-	mov ax, [X]
-	cmp ax, [Y]
-	JLE L2
+	mov ax, [N]
+	mul byte [Z]
+	mov [T1], ax
 
-	mov ax, [X]
-	imul ax, 2
+	mov ax, [M]
+	add ax, [T1]
 	mov [T2], ax
 
 	mov ax, [T2]
-	mov [X], ax
-
-L2:	nop
-	mov ax, [X]
-	sub ax, 1
+	add ax, 12
 	mov [T3], ax
 
 	mov ax, [T3]
@@ -84,7 +76,6 @@ L2:	nop
 	mov edx, ResultEnd
 	int 80h
 
-L1:	nop
 
 fini:
 	mov eax,sys_exit ;terminate, sys_exit = 1
