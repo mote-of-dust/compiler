@@ -6,8 +6,8 @@ stdout		equ	1
 stderr		equ	3
 
 section .data		;used to declare constants
-	M	 db	'aaaaa'
 	X	 db	'aaaaa'
+	Y	 db	'aaaaa'
 	T1	 db	'aaaaa'
 	T2	 db	'aaaaa'
 	T3	 db	'aaaaa'
@@ -47,23 +47,32 @@ _start:
 	mov [T1], ax
 
 	mov ax, [T1]
-	mov [M], ax
-
-	mov ax, [M]
-	add ax, 12
-	mov [T2], ax
+	mov [X], ax
 
 	mov ax, 5
-	mul byte [T2]
+	mov [Y], ax
+
+	mov ax, [X]
+	cmp ax, [Y]
+	JL L1
+
+	mov ax, [X]
+	cmp ax, [Y]
+	JLE L2
+
+	mov ax, [X]
+	imul ax, 2
+	mov [T2], ax
+
+	mov ax, [T2]
+	mov [X], ax
+
+L2:	nop
+	mov ax, [X]
+	sub ax, 1
 	mov [T3], ax
 
-	mov dx, 0
 	mov ax, [T3]
-	mov bx, 3
-	div bx
-	mov [T4], ax
-
-	mov ax, [T4]
 	mov [X], ax
 
 	mov ax,[X]		;integer to print in ax
@@ -75,6 +84,7 @@ _start:
 	mov edx, ResultEnd
 	int 80h
 
+L1:	nop
 
 fini:
 	mov eax,sys_exit ;terminate, sys_exit = 1
@@ -117,8 +127,8 @@ Next:	sub bl,'0'	;convert character to number
 	add ecx,1 	;pt = pt + 1
 	mov bl, byte[ecx]
 	cmp bl,0xA	;is it a <lf>
-	jne Next	; get next digit
-	ret
+jne Next	; get next digit
+ret
 
 
 ConvertIntegerToString:

@@ -618,8 +618,8 @@ namespace app
             tw.WriteLine("\tadd ecx,1 	;pt = pt + 1");
             tw.WriteLine("\tmov bl, byte[ecx]");
             tw.WriteLine("\tcmp bl,0xA	;is it a <lf>");
-            tw.WriteLine("jne Next	; get next digit");
-            tw.WriteLine("ret\n\n");
+            tw.WriteLine("\tjne Next	; get next digit");
+            tw.WriteLine("\tret\n\n");
 
 
 

@@ -50,6 +50,87 @@ _start:
 	mov [M], ax
 
 	mov ax, [M]
-	add ax, 5
+	add ax, 12
 	mov [T2], ax
 
+	mov ax, 5
+	mul byte [T2]
+	mov [T3], ax
+
+	mov dx, 0
+	mov ax, [T3]
+	mov bx, 3
+	div bx
+	mov [T4], ax
+
+	mov ax, [T4]
+	mov [X], ax
+
+	mov ax,[X]		;integer to print in ax
+	call    ConvertIntegerToString  ;Convert binary integer to a char string
+	mov ax,[X]		;integer to print in ax
+	mov eax, 4	;write
+	mov ebx, 1	;print default sys_out
+	mov ecx, Result	;start address for print
+	mov edx, ResultEnd
+	int 80h
+
+
+fini:
+	mov eax,sys_exit ;terminate, sys_exit = 1
+	xor ebx,ebx	;successfully, zero in ebx indicates success
+	int 80h
+
+
+PrintString:
+	push    ax
+	push    dx
+	mov eax, 4
+	mov ebx, 1		; print default output device
+	mov ecx, userMsg	; pointer to string
+	mov edx, lenUserMsg	; arg1, where to write, screen
+	int	80h		; interrupt 80 hex, call kernel
+	pop     dx              ;Restore registers.
+	pop     ax
+	ret
+
+GetAnInteger:	;Get an integer as a string
+	mov eax,3	;read
+	mov ebx,2	;device
+	mov ecx,num	;buffer address
+	mov edx,6	;max characters
+	int 0x80
+
+ConvertStringToInteger:
+	mov ax,0	;hold integer
+	mov [ReadInt],ax ;initialize 16 bit number to zero
+	mov ecx,num	;pt - 1st or next digit of number as a string 
+	mov bx,0
+	mov bl, byte [ecx] ;contains first or next digit
+Next:	sub bl,'0'	;convert character to number
+	mov ax,[ReadInt]
+	mov dx,10
+	mul dx		;eax = eax * 10
+	add ax,bx
+	mov [ReadInt], ax
+	mov bx,0
+	add ecx,1 	;pt = pt + 1
+	mov bl, byte[ecx]
+	cmp bl,0xA	;is it a <lf>
+	jne Next	; get next digit
+	ret
+
+
+ConvertIntegerToString:
+	mov ebx, ResultValue + 4   ;Store the integer as a five
+ConvertLoop:
+	sub dx,dx  ; repeatedly divide dx:ax by 10 to obtain last digit of number
+	mov cx,10  ; as the remainder in the DX register.  Quotient in AX.
+	div cx
+	add dl,'0' ; Add '0' to dl to convert from binary to character.
+	mov [ebx], dl
+	dec ebx
+	cmp ebx,ResultValue
+	jge ConvertLoop
+
+	ret
