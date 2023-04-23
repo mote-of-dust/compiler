@@ -476,11 +476,7 @@ namespace app
                             tw.WriteLine("\tmov ecx, Result	;start address for print");
                             tw.WriteLine("\tmov edx, ResultEnd");
                             tw.WriteLine("\tint 80h\n");
-                            // tw.WriteLine("\tmov edx,eax	; edx has num characters read including <lf> ****");
-                            // tw.WriteLine("\tmov eax, 4	;write");
-                            // tw.WriteLine("\tmov ebx, 1	;print default sys_out");
-                            // tw.WriteLine("\tmov ecx, [" + popped[1] + "]     ;start address for print");
-                            // tw.WriteLine("\tint 80h\n");
+
                             break;
                         }
                 }
@@ -711,22 +707,6 @@ namespace app
             }
             dOpArr.ToArray();
 
-            // foreach (var item in dOpArr)
-            // {
-            //     Console.WriteLine(item);
-            // }
-
-            //double checking everything was written correctly to list<string[]>
-            // foreach (var array in symArr)
-            // {
-            //     // test case just to get index 0// Console.Write(array[0]);
-            //     // foreach (var item in array)
-            //     // {
-            //     //     Console.Write(item + " ");
-
-            //     // }
-            //     Console.Write('\n');
-            // }
 
             for (int i = 0; i < tokenArr.GetLength(0); i++)
             {
@@ -787,11 +767,7 @@ namespace app
                                 Console.WriteLine("Implementing pop logic...");
                                 if (dOpArr.Contains(prevTerm) && prevTerm != "INPUT")
                                 {
-                                    // Console.WriteLine("Special code needed for relational operator!");
-                                    // Console.WriteLine(">>> SHUTTING DOWN...");
 
-                                    // // Console app
-                                    // System.Environment.Exit(1);
 
                                     prevTerm = relopPop(pushdown, prevTerm);
                                     Console.WriteLine("~~~ FIXUP PRINT ~~~");
@@ -805,8 +781,7 @@ namespace app
                                 else if (prevTerm == "INPUT")
                                 {
                                     prevTerm = inputPop(pushdown, prevTerm);
-                                    // Console.WriteLine(">>> SPECIAL CODE TO BE IMPLEMENTED");
-                                    // System.Environment.Exit(1);
+
                                 }
                                 else if (prevTerm == "PRINT")
                                 {

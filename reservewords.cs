@@ -19,12 +19,6 @@ namespace app
 
             String[] resArr = reserved.ToArray();
 
-            // for (int i = 0; i < resArr.GetLength(0); i++)
-            // {
-            //     Console.WriteLine(resArr[i]);
-            // }
-            // pgmreader = new StreamReader()
-
             return resArr;
         }
     }

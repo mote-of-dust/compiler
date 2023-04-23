@@ -27,16 +27,6 @@ namespace app
                 rowsize++;
             }
 
-            //double checking everything was written correctly to list<string[]>
-            // foreach (var array in tokenlist)
-            // {
-            //     foreach (var item in array)
-            //     {
-            //         Console.Write(item + " ");
-
-            //     }
-            //     Console.Write('\n');
-            // }
 
             using StreamWriter file = new("symbol_table.csv");
             for (int i = 0; i < tokenArr.GetLength(0); i++)

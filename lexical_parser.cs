@@ -1,33 +1,6 @@
 ﻿using System;
 
-/*
-THINGS TO WORK ON:  
-                    (4-03-2023)
-                    Syntax analyzer started. Simple process to scan token array and symbol
-                    table can place the correct items into a pushdown stack. CSV of
-                    operator precedence table has been made, and logic to implement the
-                    check of precedence has been started. The function itself still
-                    needs to be implemented, though similar functionality has already
-                    been coded with the parse table csv, which can be partially used
-                    for this purpose as well.
 
-                    (2-25-2023)
-                    class completed which takes in the fsa state csv and creates
-                    a List<String[]> variable out of it. Switch case statements have
-                    begun to be adjusted to make it's decisions based off the csv,
-                    current state, and the current tempvar. Propper typing for each
-                    token appears to be working (for what is currently implemented)
-                    Rest of the switch cases Need to be completed,after which all that 
-                    is left is completing the symbol table based off of the token-list.
-
-
-                    (2- 22-2023)
-                    CSV made, and code written to read it and put in list.
-                    Next will be working out the switch case, and potential nested
-                    looping needed to parse code and traverse the FSA table. 
-                    Examples to look at are: pg 48 of the hymnal,
-                    pg 50, and 51 as well.
- */
 namespace app
 {
     class lexical_parser
@@ -64,11 +37,6 @@ namespace app
             while (pgmreader.Peek() > -1)
             {
                 ch = (char)pgmreader.Read();
-                // Console.WriteLine("Next char read is: " + ch.ToString());
-
-                // Console.WriteLine("Is " + ch + " a letter: ");
-                // Console.WriteLine(Char.IsLetter(ch));
-
 
                 if (Char.IsLetter(ch))
                 {
@@ -97,14 +65,11 @@ namespace app
                     if (statetab[0][staterow] == chSym.ToString())
                     {
                         nextstate = Convert.ToInt32(statetab[curstate + 1][staterow]);
-                        // Console.WriteLine("Next state for char " + ch + " is " + nextstate.ToString());
-                        //Console.WriteLine("Next state is: " + statetab[curstate + 1][i]);
+
                         break;
                     }
                     else
                     {
-                        // Console.WriteLine(statetab[0][staterow]);
-                        // Console.WriteLine("False");
                     }
                 }
 
@@ -198,23 +163,6 @@ namespace app
                                 break;
                             }
 
-
-                            // //checking if the var is touching a + , * / etc.
-
-                            // // if (ch == ' ')
-                            // // {
-                            // //     tempvar = "";
-                            // // }
-                            // // else
-                            // // {
-                            // //     tempvar = ch.ToString();
-                            // // }
-                            // // curstate = Convert.ToInt32(statetab[1][staterow]);
-                            // tempvar = "";
-                            // curstate = 0;
-                            // //Console.WriteLine("Next state")
-                            // break;
-
                         }
                     case 7:
                         {
@@ -230,14 +178,7 @@ namespace app
                         }
                     case 9:
                         {
-                            // tempvar = "";
-                            // Console.WriteLine("before: " + tempvar);
-                            // if (nextstate == 0)
-                            // {
-                            //     tempvar = "";
-                            // }
-                            // Console.WriteLine("After: " + tempvar);
-                            // Console.WriteLine(nextstate);
+
                             curstate = nextstate;
                             break;
                         }
@@ -396,15 +337,6 @@ namespace app
 
                 }
 
-                // catches edge case of last character to be read, and correctly types it.
-                // if (!(pgmreader.Peek() > -1))
-                // {
-                //     //Console.WriteLine("Current state = " + curstate);
-                //     //Console.WriteLine(statetab[curstate + 1][7]);
-                //     int tempstate = Convert.ToInt32(statetab[curstate + 1][7]);
-                //     tokenList.Add(tempvar + " " + statetab[tempstate + 1][1]);
-                //     //Console.WriteLine("test " + statetab[tempstate + 1][1]);
-                // }
             }
 
             tokenvars = tokenList.ToArray();
