@@ -6,8 +6,8 @@ stdout		equ	1
 stderr		equ	3
 
 section .data		;used to declare constants
-	M	 db	'aaaaa'
 	X	 db	'aaaaa'
+	Y	 db	'aaaaa'
 	T1	 db	'aaaaa'
 	T2	 db	'aaaaa'
 	T3	 db	'aaaaa'
@@ -47,25 +47,58 @@ _start:
 	mov [T1], ax
 
 	mov ax, [T1]
-	mov [M], ax
+	mov [X], ax
 
-	mov ax, [M]
-	add ax, 12
+	mov ax,[X]		;integer to print in ax
+	call    ConvertIntegerToString  ;Convert binary integer to a char string
+	mov ax,[X]		;integer to print in ax
+	mov eax, 4	;write
+	mov ebx, 1	;print default sys_out
+	mov ecx, Result	;start address for print
+	mov edx, ResultEnd
+	int 80h
+
+	call    PrintString
+	call    GetAnInteger
+	mov ax, [ReadInt]
 	mov [T2], ax
 
-	mov ax, 5
-	mul byte [T2]
+	mov ax, [T2]
+	mov [Y], ax
+
+	mov ax,[Y]		;integer to print in ax
+	call    ConvertIntegerToString  ;Convert binary integer to a char string
+	mov ax,[Y]		;integer to print in ax
+	mov eax, 4	;write
+	mov ebx, 1	;print default sys_out
+	mov ecx, Result	;start address for print
+	mov edx, ResultEnd
+	int 80h
+
+	mov ax, [X]
+	cmp ax, [Y]
+	JLE L1
+
+	mov ax, [X]
+	add ax, 50
 	mov [T3], ax
 
-	mov dx, 0
 	mov ax, [T3]
-	mov bx, 3
-	div bx
+	mov [X], ax
+
+	mov ax, [X]
+	cmp ax, 11
+	JLE L2
+
+	mov ax, [X]
+	add ax, 20
 	mov [T4], ax
 
 	mov ax, [T4]
 	mov [X], ax
 
+L2:	nop
+L1:	nop
 	mov ax,[X]		;integer to print in ax
 	call    ConvertIntegerToString  ;Convert binary integer to a char string
 	mov ax,[X]		;integer to print in ax
